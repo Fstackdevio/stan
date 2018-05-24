@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="ngQuiz" ng-controller="ngQuiz">
+<head>
+    <title>{{app.title}}</title>
+    <!-- app's styling -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico"/>
+    <link href="assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/plugins/datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+    
+    <link href="assets/css/animate.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/sweet-alert.css" rel="stylesheet" type="text/css" />
+    <!-- extras css -->
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-datatables/dist/angular-datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/plugins/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+    <!-- //extras -->
+    <link href="assets/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/404.css" rel="stylesheet" type="text/css" />
+    <!-- preloader -->
+    <link href="assets/css/preloaders.css" rel="stylesheet" type="text/css" />
+    <!-- //end preloader -->
+
+    <!-- end styling -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body id="login" class="fixed-left">
+
+<div ui-view></div>
+
+<div ng-hide="isAdmin == true || thisPage !== ''">
+<footer ng-show="currentPage !== 'preview'" style="margin-bottom: 0%;"> 
+    <div class="col-xs-12 animated flash footer-text">
+        <p class="text-muted m-t-5 text-center">{{app.schoolName}}</p>
+    </div>
+</footer> 
+</div>
+
+<!-- App's javascript -->
+<script src="assets/js/jquery.min.js"></script>
+<!-- data tables main -->
+<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="assets/js/sweet-alert.min.js"></script>
+<script type="text/javascript" src="assets/js/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-datatables/dist/angular-datatables.bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/angular-ui-router.js"></script>
+<script type="text/javascript" src="assets/plugins/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+<script src="bower_components/jquery.easy-pie-chart/dist/angular.easypiechart.min.js"></script>
+<script src="bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+<script src="bower_components/jquery.easy-pie-chart/dist/easypiechart.min.js"></script>
+<script type="text/javascript" src="assets/js/app.js"></script>
+<!-- CORE APP JS -->
+<script src="assets/js/services.js"></script>
+<script type="text/javascript" src="assets/js/controllers.js"></script>
+<script type="text/javascript" src="assets/js/routes.js"></script>
+<script type="text/javascript" src="assets/js/custom.js"></script>
+<!-- //CORE APP JS -->
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/modernizr.min.js"></script>
+<script src="assets/js/detect.js"></script>
+<script src="assets/js/fastclick.js"></script>
+<script src="assets/js/jquery.slimscroll.js"></script>
+<script src="assets/js/jquery.blockUI.js"></script>
+<script src="assets/js/waves.js"></script>
+<script src="assets/js/wow.min.js"></script>
+<script src="assets/js/jquery.nicescroll.js"></script>
+<script src="assets/js/jquery.scrollTo.min.js"></script>
+<script src="assets/apis/questions.json"></script>
+
+    <!-- App ADMIN controllers -->
+<script src="assets/js/controllers/admin/loginCtrl.js"></script>
+<script src="assets/js/controllers/admin/dashCtrl.js"></script>
+<script src="assets/js/controllers/admin/students.js"></script>
+<script src="assets/js/controllers/admin/exams.js"></script>
+<script src="assets/js/controllers/admin/questions.js"></script>
+<script src="assets/js/controllers/admin/results.js"></script>
+<script src="assets/js/controllers/admin/download.js"></script>
+<script src="assets/js/controllers/admin/help.js"></script>
+    <!-- End app ADMIN controllers -->
+<!-- live reload -->
+<!-- <script type="text/javascript">
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>-->
+</body>
+</html>

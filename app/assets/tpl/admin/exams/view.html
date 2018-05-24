@@ -1,0 +1,80 @@
+<div ng-controller="adminCtrl.viewExamsCtrl" class="wrapper">
+	<div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                    	View All Exams 
+                    	<div class="row pull-right">
+                    	<span class="col-md-6" tooltip="Collapse Panel" flow="up">
+                    		<i class="ti-angle-down"></i>
+                    	</span>
+                    	<span class="col-md-6" tooltip="Reload Table" flow="up">
+                    		<i class="ti-reload"></i>
+                    	</span>
+                    </h3>
+                    
+                 </div>
+                <div class="panel-body">
+                    <table datatable="ng" dt-options="dtOptions" class="table table-hover table-responsive">
+                    	<thead>
+				            <tr>
+                                <th>S/N</th>
+                                <th>Exam Name</th>
+                                <th>Exam Password</th>
+                                <th>Time Duration</th>
+                                <th>Instructions</th>
+                                <th>Status</th>
+                                <th>Unit</th>
+                                <th>Instructor</th>
+                                <th>Actions</th>
+                            </tr>
+        				</thead>
+        				<tbody>
+				            <tr ng-repeat="exam in examsList">
+				                <td>{{$index + 1}}</td>
+                                <td>{{exam.name}}</td>
+                                <td>{{exam.pwd}}</td>
+                                <td>{{exam.duration}}</td>
+                                <td>{{exam.instructions}}</td>
+                                <td>
+                                	<span ng-show="exam.disabled == 1" class="text-danger">Inactive</span>
+                                	<span ng-show="exam.disabled == 0" class="text-success">Active</span>
+                                </td>
+                                <td>{{exam.unit}}</td>
+                                <td>{{exam.instructor}}</td>
+                                <td ng-disabled="exam.pwd == '-'">
+	                                <div class="row">
+	                                	<div class="col-md-5">
+	                                		<a ui-sref="admin.editExam({data: exam._id})" class="btn btn-info" tooltip="Edit" flow="down">
+	                                			<span class="col-md-3"><i class="ti-pencil"></i></span>
+	                                		</a>
+	                                	</div>	
+	                                	<div class="col-md-1"></div>
+	                                	<div class="col-md-5">
+	                                		<button ng-click="doDeleteExam($index,exam._id,exam)" class="btn btn-danger" tooltip="Delete" flow="down">
+	                                			<span class="col-md-3"><i class="ti-trash"></i></span>
+	                                		</button>
+	                                	</div>
+	                                </div>
+                                </td>
+				            </tr>
+        				</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="assets/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="assets/plugins/datatables/buttons.bootstrap.min.js"></script>
+    <!-- module for compression.....readup node zlib -->
+    <!-- <script src="assets/plugins/datatables/jszip.min.js"></script> -->
+    <!-- <div class="page-preloader" id="page-preloader"> -->
+            <!-- <span class="preloader__item preloader__item1"></span>
+            <span class="preloader__item preloader__item2"></span>
+            <span class="preloader__item preloader__item3"></span>
+            <span class="preloader__item preloader__item4"></span> -->
+        <!-- </div> -->
+</div>

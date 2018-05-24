@@ -1,0 +1,38 @@
+->>---------------------Admin Section work items--------->
+Students
+	=> Create (Completed)
+
+	=> Read (Completed)
+
+	=> Update (Completed)
+
+	=> Delete (Completed)
+
+Exam
+	=> Create (Completed)
+
+	=> Read (Completed)
+
+	=> Update (Completed)
+
+	=> Delete (Completed)
+
+Questions
+	=> Create (Not Completed)
+
+	=>Read (Not Completed)
+
+	=> Update (Not Completed)
+
+	=> Delete (Not Completed)
+
+Results
+	=>Read (Not Completed)
+
+Downloads
+	=> Download results (Not Completed)
+
+	=> View Download History (Not Completed)
+
+
+	......done the admin login and logout and route on login also cleaned up the select box in client login......

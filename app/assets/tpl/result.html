@@ -1,0 +1,16 @@
+<div class="well">
+	<h4>This is the results page</h4>
+
+	<div ng-controller="testCtrl">
+		{{testing}}<br>
+		{{allQuestions}}
+	</div>
+
+     <div ng-controller="ExampleController">
+      <input type="checkbox" ng-model="confirmed" ng-change="change()" id="ng-change-example1" />
+        <input type="checkbox" ng-model="confirmed" id="ng-change-example2" />
+        <label for="ng-change-example2">Confirmed</label><br />
+        <tt>debug = {{confirmed}}</tt><br/>
+        <tt>counter = {{counter}}</tt><br/>
+      </div>
+</div>

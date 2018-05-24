@@ -1,0 +1,41 @@
+[{
+	"name": "Select a course",
+	"pwd": "",
+	"duration": 60,
+	"instructions": "",
+	"disabled" : true,
+	"unit" : 0,
+	"instructor" : "Ms. Ashley Paige"
+},{
+	"name": "CSC 313",
+	"pwd": "happy",
+	"duration": 60,
+	"instructions": "Attempt all 70 questions in 1 hour",
+	"disabled" : false,
+	"unit" : 3,
+	"instructor" : "Ms. Ashley Paige"
+}, {
+	"name": "GST 221",
+	"pwd": "crowned",
+	"duration": 90,
+	"instructions": "Attempt all 70 questions in 1 hour",
+	"disabled" : false,
+	"unit" : 2,
+	"instructor" : "Ms. Ashley Paige"
+}, {
+	"name": "CHM 417",
+	"pwd": "peas",
+	"duration": 30,
+	"instructions": "Attempt all 70 questions in 1 hour",
+	"disabled" : false,
+	"unit" : 3,
+	"instructor" : "Ms. Ashley Paige"
+}, {
+	"name": "BLY 225",
+	"pwd": "diamonds",
+	"duration": 90,
+	"instructions": "Attempt all 70 questions in 1 hour",
+	"disabled" : false,
+	"unit" : 1,
+	"instructor" : "Ms. Ashley Paige"
+}]

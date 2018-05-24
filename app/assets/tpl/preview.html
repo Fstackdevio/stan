@@ -1,0 +1,118 @@
+<div ng-controller="previewCtrl">
+<div id="wrapper">
+  <!-- Page Content -->
+    <div class="container-fluid">
+
+      <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <h5 class="page-title">Student Profile</h5>
+        </div>
+      </div>
+      <!-- /.row -->
+      <!-- .row -->
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div class="white-box">
+            <div class="user-bg">
+              <div class="overlay-box">
+                <div class="user-content"> <a href="javascript:void(0)"><img src="../plugins/images/users/genu.jpg" class="thumb-lg img-circle" alt="img"></a>
+
+                  <h4 class="text-white">Welcome {{userInfo.fullName}}!</h4>
+                  <h5 class="text-white">{{userInfo.username}}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="user-btm-box" style="padding-bottom: -5%;">
+            <style type="text/css">
+              .form-group{
+                margin-bottom: 2% !important;
+              }
+            </style>
+            <div class="row">
+                  <div class="col-md-12">
+                    <!-- <div class="form-group"> -->
+                        <p class="form-control-static">Selected Exam: CSC 313 </p>
+                    <!-- </div> -->
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-12">
+                    <!-- <div class="form-group"> -->
+                        <p class="form-control-static">Allocated Exam Time: 90 minutes</p>
+                    <!-- </div> -->
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-12">
+                    <!-- <div class="form-group"> -->
+                        <p class="form-control-static">Course Unit: 2</p>
+                    <!-- </div> -->
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-12">
+                    <!-- <div class="form-group"> -->
+                        <p class="form-control-static">Instructions: Answer all 60 questions</p>
+                    <!-- </div> -->
+                  </div>
+                  <!--/span-->
+                </div>
+                <!--/row-->
+                
+            </div>
+          </div>
+          </div>
+        <div class="col-md-8 col-xs-12">
+          <div class="white-box">
+            <h3>Candidate Details</h3>
+            <hr>            
+              <div class="tab-pane" id="home">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <p class="form-control-static">Registration Number: {{userInfo.reg_number}} </p>
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <p class="form-control-static">Department: {{userInfo.department}}</p>
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <p class="form-control-static">Level: {{userInfo.level}}</p>
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <p class="form-control-static">Eligibility Status: <span class="label label-success">Active</span></p>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <p class="form-control-static">Instructor: Miss Paige</p>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <button class="fcbtn btn btn-success btn-outline btn-1c btn-lg pull-right" ng-click="startExam()">Start Exam</button>
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="white-box">
+            <h4>Note:</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<link href="assets/css/extras/style.css" rel="stylesheet">
+<link href="assets/css/extras/default.css" id="theme"  rel="stylesheet">
