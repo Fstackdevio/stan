@@ -107,7 +107,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 	};
 
 	$scope.showLoginHelp = function(){
-		var helpText = "1. Your username is your firstname.surname e.g if your name is Michael Rice your username is michael.rice. 2. Your password shows up as soon as you select a course";
+		var helpText = "1. Your username is your firstname.surname e.g if your name is Michael Rice your username is 'michael.rice'.\n 2. Your password shows up as soon as you select a course";
 		$rootScope.showAlert('info',helpText,'Help')
 	}
 }]);
@@ -352,6 +352,7 @@ app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function(
 	    }, function(isConfirm){  
 	        if (isConfirm) {  
 	            swal("Success", "Your exam would start soon.", "info");   
+	            $state.go('main');
 	        }
 	    });
 	}
