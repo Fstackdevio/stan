@@ -188,6 +188,23 @@ public function getExamSession(){
     return $sess;
 }
 
+//clear exam session
+
+public function clearExamSession(){
+    if(!isset($_SESSION)){
+        session_start();
+    }
+
+    if(isset($_SESSION['examData'])){
+        foreach ($_SESSION['examData'] as $key => $value) {
+            unset($_SESSION['examData'][$key]);
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 /**
      * Function to store admin/staff details when logged in

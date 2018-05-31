@@ -50,6 +50,21 @@ $app->post('/setExam', function() use ($app){
     echoResponse(200, $response);
 });
 
+$app->get('/examSession', function(){
+    $db = new DbHandler();
+    $sess = $db->getExamSession();
+
+    if(!empty($sess['examData'])){
+        $response['message'] = $sess['examData'];
+        $response['status'] = 'success';
+    } else{
+        $response['message'] = "Nothing stored.";
+        $response['status'] = 'error';
+    };    
+
+    echoResponse(200, $response);
+});
+
 //api to add exam to the database
 $app->post('/addExam', function() use ($app) {
     $response = array();

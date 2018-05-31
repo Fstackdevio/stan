@@ -31,25 +31,25 @@
             <div class="row">
                   <div class="col-md-12">
                     <!-- <div class="form-group"> -->
-                        <p class="form-control-static">Selected Exam: CSC 313 </p>
+                        <p class="form-control-static">Selected Exam: {{examInfo.name}} </p>
                     <!-- </div> -->
                   </div>
                   <!--/span-->
                   <div class="col-md-12">
                     <!-- <div class="form-group"> -->
-                        <p class="form-control-static">Allocated Exam Time: 90 minutes</p>
+                        <p class="form-control-static">Allocated Exam Time: {{examInfo.duration}} minutes</p>
                     <!-- </div> -->
                   </div>
                   <!--/span-->
                   <div class="col-md-12">
                     <!-- <div class="form-group"> -->
-                        <p class="form-control-static">Course Unit: 2</p>
+                        <p class="form-control-static">Course Unit: {{examInfo.unit}}</p>
                     <!-- </div> -->
                   </div>
                   <!--/span-->
                   <div class="col-md-12">
                     <!-- <div class="form-group"> -->
-                        <p class="form-control-static">Instructions: Answer all 60 questions</p>
+                        <p class="form-control-static">Instructions: {{examInfo.instruction}}</p>
                     <!-- </div> -->
                   </div>
                   <!--/span-->
@@ -85,12 +85,12 @@
                   <!--/span-->
                   <div class="col-md-12">
                     <div class="form-group">
-                        <p class="form-control-static">Eligibility Status: <span class="label label-success">Active</span></p>
+                        <p class="form-control-static">Eligibility Status: <span class="label label-success">Eligible</span></p>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                        <p class="form-control-static">Instructor: Miss Paige</p>
+                        <p class="form-control-static">Instructor: {{examInfo.instructor}}</p>
                     </div>
                   </div>
                   <div class="col-md-12">
@@ -107,7 +107,21 @@
       <div class="row">
         <div class="col-md-12">
           <div class="white-box">
-            <h4>Note:</h4>
+            <h3>Note:</h3>
+            <h5>
+              Please take note of the following instructions for writing taking this test.
+            </h5>
+            <p>
+              <ol>
+                <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius vitae similique quos veritatis numquam fugiat fugit ea vel consectetur deserunt, provident hic nesciunt, natus soluta voluptate laudantium a possimus suscipit.</li>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius vitae similique quos veritatis numquam fugiat fugit ea vel consectetur deserunt, provident hic nesciunt, natus soluta voluptate laudantium a possimus suscipit.
+                </li>
+                <li>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius vitae similique quos veritatis numquam fugiat fugit ea vel consectetur deserunt, provident hic nesciunt, natus soluta voluptate laudantium a possimus suscipit.
+                </li>
+              </ol>
+            </p>
           </div>
         </div>
       </div>

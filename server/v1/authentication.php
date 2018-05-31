@@ -12,16 +12,6 @@ $app->get('/session', function() {
     echoResponse(200, $session);
 });
 
-$app->get('/examSession', function(){
-    $db = new DbHandler();
-    $sess = $db->getExamSession();
-
-    $response['examInfo'] = $sess['examData'];
-    $response['status'] = 'success';
-
-    echoResponse(200, $response);
-});
-
 $app->post('/login', function() use ($app) {
     require_once 'passwordHash.php';
     $r = json_decode($app->request->getBody());
@@ -106,6 +96,21 @@ $app->get('/logout', function() {
     $session = $db->destroyStuSession();
     $response["status"] = "info";
     $response["message"] = "Logged out successfully";
+    echoResponse(200, $response);
+});
+
+
+$app->get('/clearExam', function() {
+    $db = new DbHandler();
+    $isCleared = $db->clearExamSession();
+    if($isCleared){
+        $response["status"] = "success";
+        $response["message"] = "Exam Data cleared successfully";
+    } else {
+        $response["status"] = "error";
+        $response["message"] = "An error occurrred";
+    }
+
     echoResponse(200, $response);
 });
 ?>

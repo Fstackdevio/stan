@@ -632,3 +632,28 @@ p{
   
 border-radius:200px;
 }
+.animate-100 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+
+.animate-200 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.animate-300 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.animate-400 {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+.animate-500 {
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+}
+.animate-600 {
+  -webkit-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+}

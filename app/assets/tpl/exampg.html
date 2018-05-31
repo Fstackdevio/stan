@@ -35,7 +35,7 @@
         <div class="col-md-12">
             <div class="panel panel-primary panelBdy">
                 <div class="panel-heading pHead">
-                    <h3 class="panel-title animated fadeInRight">Question {{currentQuestion}}
+                    <h3 class="panel-title animated slideInUp">Question {{currentQuestion}}
 	                    <span class="pull-right hidden-xs hidden-sm" data-toggle="modal" data-target=".reviewModal" style="cursor: pointer;font-weight: bold; font-size: large;">
 	                    	<i class="ti-check-box"></i>
 	                    </span> 
@@ -47,10 +47,10 @@
                 <div ng-repeat="question in filteredQuestions" id="optionGroup">
 	                <div class="panel-body panelBdy" style="padding:30px;padding-top:-20px;">
 	                    <div class="row">
-	                         <p style="font-weight: lighter;" class="animated bounceIn" id="question">{{question.question}}.</p>
-	                    <div class="row opt-group">
+	                         <p style="font-weight: lighter;" class="animated fadeInDown" id="question">{{question.question}}.</p>
+	                    <div class="row opt-group" style="margin-top: 1em;">
 	                        <div class="col-sm-12 opt-a" ng-repeat="option in question.options">
-	                            <div class="radio radio-primary">
+	                            <div class="radio radio-primary animated fadeInUp animate-{{$index + 1}}00">
 	                                <input type="radio" name="{{question.id}}" id="{{option.id}}" value="{{option.id}}" ng-model="option.selected" ng-click="selectOption(question,option,filteredQuestions)">
 	                                <label for="{{option.id}}">{{option.name}}</label>
 	                            </div>

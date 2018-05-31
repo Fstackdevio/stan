@@ -89,7 +89,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 							//console.log($rootScope.allExams[i].duration);
 							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.allExams[i].duration, inSeconds:$rootScope.allExams[i].duration*60}));
 
-							$http.post('http://localhost/stan/server/v1/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration}).then(function(response){
+							$http.post('http://localhost/stan/server/v1/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
 								console.log(response.data);
 							});
 						};
@@ -333,15 +333,26 @@ app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function(
     $http.get('http://localhost/stan/server/v1/session').then(function(res){
     	//console.log(JSON.stringify(res));
     	if(res.status == 200){
-    		if(res.data._id == ''){
-    			console.log('sorry not logged');
-    			$rootScope.showAlert('error',"Sorry you're not logged in","Error");
-    			$state.go('login');
-    		} else{
-				$scope.userInfo = res.data;
-			};
+    		$rootScope.exam = [];
+    		$http.get('http://localhost/stan/server/v1/examSession').then(function(resp){
+				if (resp.status == 200) {
+					$rootScope.exam = resp.data.message;
+				} else {
+					$rootScope.exam = "";
+				};
+
+				if((res.data._id == '') || ($rootScope.exam == '')){
+	    			console.log('sorry not logged');
+	    			$rootScope.showAlert('error',"Sorry you're not logged in","Error");
+	    			$state.go('login');
+	    		} else{
+					$scope.userInfo = res.data;
+					$scope.examInfo = $rootScope.exam;					
+				};
+			})
+    		
 		} else {
-			console.log("An unknown error occured");
+			$rootScope.showAlert('error',"Sorry, an error occurred while logging you in","Error");
 		};
 	});
 	$scope.startExam = function(){
