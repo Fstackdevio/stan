@@ -99,7 +99,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 
 					$rootScope.showAlert(res.data.status,res.data.message,res.data.status);
 
-					//$state.go('preview');
+					$state.go('preview');
 				} else{
 					console.log("login failed");
 					console.log(res.data);
