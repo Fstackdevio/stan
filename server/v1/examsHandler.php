@@ -24,6 +24,32 @@ $app->get('/getExams', function() {
     echoResponse(200, $response);
 });
 
+$app->post('/setExam', function() use ($app){
+    $r = json_decode($app->request->getBody());
+    verifyRequiredParams(array('name', 'duration'),$r);
+    $response = array();
+
+    //store the given item in the session
+    if(!isset($_SESSION['examData'])){
+        session_start();
+        foreach ($r as $key => $value) {
+            $_SESSION['examData'][$key] = $value;
+        }
+    }
+
+    //crosscheck to be sure it's not empty
+    if(isset($_SESSION['examData']['name'])){
+        $response['status'] = 'success';
+        $response['message'] = "Successfully stored exam data.";
+        // $response['info'] = $_SESSION['examData'];
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = "An unknown error occurred.";
+    }
+
+    echoResponse(200, $response);
+});
+
 //api to add exam to the database
 $app->post('/addExam', function() use ($app) {
     $response = array();

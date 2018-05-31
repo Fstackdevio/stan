@@ -12,6 +12,16 @@ $app->get('/session', function() {
     echoResponse(200, $session);
 });
 
+$app->get('/examSession', function(){
+    $db = new DbHandler();
+    $sess = $db->getExamSession();
+
+    $response['examInfo'] = $sess['examData'];
+    $response['status'] = 'success';
+
+    echoResponse(200, $response);
+});
+
 $app->post('/login', function() use ($app) {
     require_once 'passwordHash.php';
     $r = json_decode($app->request->getBody());

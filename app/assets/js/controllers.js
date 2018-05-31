@@ -43,8 +43,9 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
     	
 	});
 
-	$http.get('http://localhost/stan/server/v1/getExams').then(function(res){
-		console.log(res);
+	// $http.get('http://localhost/stan/server/v1/getExams').then(function(res){
+	$http.get('http://localhost/stan/app/assets/apis/exams.json').then(function(res){
+		// console.log(res);
 		$rootScope.allExams = res.data.exams;
 		$rootScope.showPassword = function(selected){
 			for(var i in $rootScope.allExams){
@@ -82,18 +83,23 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 				if(res.data.status == "success"){
 					//console.log("logged in");
 
-					for(var i=0;i<=$rootScope.exams.length;i++){
-						if(form.password == $rootScope.exams[i].pwd){
-							//console.log($rootScope.exams[i].duration);
-							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.exams[i].duration, inSeconds:$rootScope.exams[i].duration*60}));
+					for(var i=0; i<$rootScope.allExams.length; i++){
+						console.log($rootScope.allExams[i].pwd);
+						if(form.password == $rootScope.allExams[i].pwd){
+							//console.log($rootScope.allExams[i].duration);
+							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.allExams[i].duration, inSeconds:$rootScope.allExams[i].duration*60}));
 
-							$state.go('main');
+							$http.post('http://localhost/stan/server/v1/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration}).then(function(response){
+								console.log(response.data);
+							});
 						};
 					};
 
+
+
 					$rootScope.showAlert(res.data.status,res.data.message,res.data.status);
 
-					$state.go('preview');
+					//$state.go('preview');
 				} else{
 					console.log("login failed");
 					console.log(res.data);

@@ -1,4 +1,4 @@
-[{
+{"exams": [{
 	"name": "Select a course",
 	"pwd": "",
 	"duration": 60,
@@ -38,4 +38,4 @@
 	"disabled" : false,
 	"unit" : 1,
 	"instructor" : "Ms. Ashley Paige"
-}]
+}]}

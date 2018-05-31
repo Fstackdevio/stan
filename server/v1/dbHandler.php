@@ -167,6 +167,28 @@ public function getStuSession(){
     return $sess;
 }
 
+//function to retrieve the exam data from session
+
+public function getExamSession(){
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+
+    $sess = array();
+    if(isset($_SESSION['examData'])){
+        foreach ($_SESSION['examData'] as $key => $value) {
+            $sess['examData'][$key] = $value;
+        }
+    } else {
+        foreach ($_SESSION['examData'] as $key => $value) {
+            $sess['examData'][$key] = '';
+        }
+    }
+
+    return $sess;
+}
+
+
 /**
      * Function to store admin/staff details when logged in
      */
