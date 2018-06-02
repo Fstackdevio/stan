@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2018 at 11:33 AM
+-- Generation Time: Jun 02, 2018 at 10:08 PM
 -- Server version: 10.1.32-MariaDB
 -- PHP Version: 7.2.5
 
@@ -54,7 +54,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`_id`, `firstname`, `lastname`, `email`, `matric`, `department`, `college`, `level`, `role`, `date_created`, `date_modified`, `created_by`, `fullName`, `username`, `password`, `active`, `access`, `course`) VALUES
-(1, 'admin', 'monestara', 'admin@stan.com', 'null', 'administrative', 'engineering', 1, 'admin', '2018-05-28 16:09:13', '2018-06-01 19:22:22', 'adeojo emmanuel', 'adeojo emmanuel', 'emmanuel.adeojo', '$2a$10$a5b3482b6dac8f83a7569uhi4/9m5S9PwS/Xwlwep5IG/OjPBlWTe', 1, 1, 'mat222');
+(1, 'admin', 'monestara', 'admin@stan.com', 'null', 'administrative', 'engineering', 1, 'admin', '2018-05-28 16:09:13', '2018-06-02 21:06:15', 'adeojo emmanuel', 'adeojo emmanuel', 'admin', '$2a$10$0312b44a43bac64f1b8c4eaklUow743sKKPNQ98lJeg9vugKB0Y4y', 1, 1, 'mat222');
 
 -- --------------------------------------------------------
 
@@ -110,6 +110,34 @@ INSERT INTO `exams` (`_id`, `name`, `pwd`, `duration`, `instructions`, `disabled
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `options`
+--
+
+CREATE TABLE `options` (
+  `id` int(255) NOT NULL,
+  `qid` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `course_id` int(255) NOT NULL,
+  `option_a` varchar(255) NOT NULL,
+  `option_b` varchar(255) NOT NULL,
+  `option_c` varchar(255) NOT NULL,
+  `option_d` varchar(255) NOT NULL,
+  `correct_option` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `options`
+--
+
+INSERT INTO `options` (`id`, `qid`, `name`, `course_id`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`) VALUES
+(1, 1, '1', 0, '4', '3', '2', '1', '4'),
+(2, 2, '1', 0, '1', '3', '4', '2', '1'),
+(3, 3, '1', 0, 'papa', 'jay jay', 'junior', 'ronaldo', 'ronaldo'),
+(4, 4, '1', 0, 'jay jay', 'bobby', 'papa', 'fatai', 'fatai');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pref_resource`
 --
 
@@ -128,13 +156,18 @@ CREATE TABLE `pref_resource` (
 
 CREATE TABLE `questions` (
   `id` int(255) NOT NULL,
+  `qid` int(255) NOT NULL,
   `course_id` int(255) NOT NULL,
   `question` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `option_a` varchar(255) NOT NULL,
   `option_b` varchar(255) NOT NULL,
   `option_c` varchar(255) NOT NULL,
   `option_d` varchar(255) NOT NULL,
   `correct_option` varchar(255) NOT NULL,
+  `explanation` varchar(255) NOT NULL,
+  `isAnswered` tinyint(1) NOT NULL DEFAULT '0',
+  `picked` varchar(11) NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -143,15 +176,11 @@ CREATE TABLE `questions` (
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `questions` (`id`, `course_id`, `question`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`, `date_modified`, `date_added`) VALUES
-(1, 2, 'what is 2+2 ?', '4', '3', '2', '1', '4', '0000-00-00 00:00:00', '2018-05-31 19:35:40'),
-(2, 2, 'what  is 3-2 ?', '1', '3', '4', '2', '1', '0000-00-00 00:00:00', '2018-05-31 19:35:40'),
-(3, 2, 'who is the best footballer', 'papa', 'jay jay', 'junior', 'ronaldo', 'ronaldo', '0000-00-00 00:00:00', '2018-05-31 19:35:40'),
-(4, 2, 'who is the governor of kwara', 'jay jay', 'bobby', 'papa', 'fatai', 'fatai', '0000-00-00 00:00:00', '2018-05-31 19:35:40'),
-(5, 2, 'what is 2+2 ?', '4', '3', '2', '1', '4', '0000-00-00 00:00:00', '2018-05-31 19:41:09'),
-(6, 2, 'what  is 3-2 ?', '1', '3', '4', '2', '1', '0000-00-00 00:00:00', '2018-05-31 19:41:09'),
-(7, 2, 'who is the best footballer', 'papa', 'jay jay', 'junior', 'ronaldo', 'ronaldo', '0000-00-00 00:00:00', '2018-05-31 19:41:09'),
-(8, 2, 'who is the governor of kwara', 'jay jay', 'bobby', 'papa', 'fatai', 'fatai', '0000-00-00 00:00:00', '2018-05-31 19:41:09');
+INSERT INTO `questions` (`id`, `qid`, `course_id`, `question`, `name`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`, `explanation`, `isAnswered`, `picked`, `date_modified`, `date_added`) VALUES
+(1, 1, 1, 'what is 2+2 ?', 'test', '4', '3', '2', '1', '4', '', 0, '', '0000-00-00 00:00:00', '2018-06-02 18:52:11'),
+(2, 2, 1, 'what  is 3-2 ?', 'test', '1', '3', '4', '2', '1', '', 0, '', '0000-00-00 00:00:00', '2018-06-02 18:52:11'),
+(3, 3, 1, 'who is the best footballer', 'test', 'papa', 'jay jay', 'junior', 'ronaldo', 'ronaldo', '', 0, '', '0000-00-00 00:00:00', '2018-06-02 18:52:11'),
+(4, 4, 1, 'who is the governor of kwara', 'test', 'jay jay', 'bobby', 'papa', 'fatai', 'fatai', '', 0, '', '0000-00-00 00:00:00', '2018-06-02 18:52:11');
 
 -- --------------------------------------------------------
 
@@ -237,6 +266,12 @@ ALTER TABLE `exams`
   ADD PRIMARY KEY (`_id`);
 
 --
+-- Indexes for table `options`
+--
+ALTER TABLE `options`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
@@ -277,10 +312,16 @@ ALTER TABLE `exams`
   MODIFY `_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `options`
+--
+ALTER TABLE `options`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `students`

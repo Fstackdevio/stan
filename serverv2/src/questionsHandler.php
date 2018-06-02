@@ -7,6 +7,9 @@ $app->post('/addQuestions', function($request, $response, $args){
 
     // $course_id = $r->course;
     $course_id = 1;
+    $explanation = "";
+    $picked = "";
+    $name = "test";
 
     $files = $request->getUploadedFiles();
     $directory = $this->get('upload_directory');
@@ -52,33 +55,40 @@ $app->post('/addQuestions', function($request, $response, $args){
     $questions = array();
     foreach ($dataArray as $data) {
         $temp = array();
-        $temp['question'] = $data['A'];
-        $temp['option_a'] = $data['B'];
-        $temp['option_b'] = $data['C'];
-        $temp['option_c'] = $data['D'];
-        $temp['option_d'] = $data['E'];
-        $temp['correct_option'] = $data['F'];
+        $temp['qid'] = $data['A'];
+        $temp['question'] = $data['B'];
+        $temp['option_a'] = $data['C'];
+        $temp['option_b'] = $data['D'];
+        $temp['option_c'] = $data['E'];
+        $temp['option_d'] = $data['F'];
+        $temp['correct_option'] = $data['G'];
 
         array_push($questions,$temp);
     }
 
 
-    $sql = "INSERT INTO `questions` (`course_id`,`question`,`option_a`,`option_b`,`option_c`,`option_d`,`correct_option`) VALUES ";
+    $sql = "INSERT INTO `questions` (`qid`, `course_id`,`question`,`name`,  `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`, `explanation`, `picked`) VALUES ";
+    $sql2 = "INSERT INTO `options` (`qid`, `name`, `course_id`, `option_a`, `option_b`, `option_c`, `option_d`, `correct_option`) VALUES ";
     $valuesArr = array();
+    $optionArr = array();
     foreach($questions as $row){
         $course_id = $course_id++;
+        $qid = $db->clean_input( $row['qid'] );
         $question = $db->clean_input( $row['question'] );
         $option_a = $db->clean_input( $row['option_a'] );
         $option_b = $db->clean_input( $row['option_b'] );
         $option_c = $db->clean_input( $row['option_c'] );
         $option_d = $db->clean_input( $row['option_d'] );
         $correct_option = $db->clean_input( $row['correct_option'] );
-        $valuesArr[] = "('$course_id', '$question', '$option_a', '$option_b', '$option_c', '$option_d', '$correct_option')";
+        $valuesArr[] = "('$qid', '$course_id', '$question', '$name', '$option_a', '$option_b', '$option_c', '$option_d', '$correct_option', '$explanation', '$picked')";
+        $optionArr[] = "('$qid', '$course_id', '$name', '$option_a', '$option_b', '$option_c', '$option_d', '$correct_option')";
     }
 
     $sql .= implode(',', $valuesArr);
+    $sql2 .= implode(',', $optionArr);
     $result = $db->insertloop($sql);
-    if ($result == true) {
+    $result2 = $db->insertloop($sql2);
+    if ($result && $result2 == true) {
         $response["status"] = "success";
         $response["message"] = "questions uploaded";
         // echoResponse(200, $response);
@@ -89,7 +99,7 @@ $app->post('/addQuestions', function($request, $response, $args){
         // echoResponse(201, $response);
         return $this->response->withJson($response)->withStatus(201);
     }
-    // return $result;
+    // return $result2;
 });
 
 $app->post('/getQuestions', function($request, $response){
@@ -97,10 +107,13 @@ $app->post('/getQuestions', function($request, $response){
     $response = array();
     $r = json_decode($request->getBody());
     verifyRequiredParams(array('limit'),$r);
-    $limit = $r->limit;
+    // $limit = $r->limit;
+    // $qid = $r->qid;
+    // $cid = $r->cid;
     $resp = $db->getAllrecords("SELECT * from questions ORDER BY RAND()");
     $response["status"] = "success";
     $response["questions"] = array();
+    $test = array();
     while($questions = $resp->fetch_assoc()) {
         $tmp = array();
         $options = array();
@@ -115,11 +128,20 @@ $app->post('/getQuestions', function($request, $response){
         $tmp["explanation"] = $questions["explanation"];
         $tmp["isAnswered"] = $questions["isAnswered"];
         $tmp["picked"] = $questions["picked"];
-        
         array_push($response["questions"], $tmp);
-        array_push($options, $options);
+        array_push($test, $options);
     }
     return $this->response->withJson($response)->withStatus(200);
 });
 
+$app->get('/testgetq', function($request, $response){
+    $db = new DbHandler();
+    $response = array();
+    $r = json_decode($request->getBody());
+    verifyRequiredParams(array('limit'),$r);
+    $resp = $db->getAllrecords("SELECT * from questions ORDER BY RAND()");
+    $response["status"] = "success";
+    $response["questions"] = $resp;
+    return $this->response->withJson($response);
+});
 ?>
