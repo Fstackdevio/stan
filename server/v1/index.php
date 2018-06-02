@@ -20,6 +20,7 @@ require_once 'prefHandler.php';
 require_once 'adminAuth.php';
 require_once 'examsHandler.php';
 require_once 'studentHandler.php';
+require_once 'questionsHandler.php';
 /**
  * Verifying required params posted or not
  */
