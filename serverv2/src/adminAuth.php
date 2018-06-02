@@ -67,7 +67,7 @@
         }
 
 });
-    $app->get('/adminLogout', function($request, $response){
+$app->get('/adminLogout', function($request, $response){
     $db = new DbHandler();
     $response = array();
     $session = $db->destroyAdminSession();

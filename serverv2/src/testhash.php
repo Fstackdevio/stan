@@ -8,6 +8,7 @@
         <h1>Upload a file</h1>
         <form method="POST" action="./../public/addQuestions" enctype="multipart/form-data">
             <label>Select file to upload:</label>
+            <input type="text" name="course">
             <input type="file" name="questions">
             <button type="submit">Upload</button>
         </form>

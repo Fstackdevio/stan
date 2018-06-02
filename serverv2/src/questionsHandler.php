@@ -1,32 +1,43 @@
 <?php
-$app->get('/', function ($request, $response, $args) {
-    $response->write("Welcome to Slim!");
-    return $response;
-});
-
-$app->post('/addQuestions', function ($request, $response, $args) {
+$app->post('/addQuestions', function($request, $response, $args){
     $response = array();
     $r = json_decode($request->getBody());
+    $db = new DbHandler();
     // $data = $request->getParsedBody();
 
-    $course_id = $r->course;
+    // $course_id = $r->course;
+    $course_id = 1;
 
     $files = $request->getUploadedFiles();
+    $directory = $this->get('upload_directory');
     if (empty($files['questions'])) {
         throw new Exception('Expected a file');
     }
- 
-    $newfile = $files['questions']->getClientFilename();
-    
+    $file = $files['questions'];
+
+    if ($file->getError() === UPLOAD_ERR_OK) {
+        $fileName = $file->getClientFilename();
+        $file->moveTo("$directory\\$fileName");
+        // $response['status'] = "success";
+        // $response['message'] = $files;
+        // $response['filename'] = $fileName;
+        // $response['filedir'] = $file;
+        // $response['filesee'] = "$directory\\$fileName";
+    }else{
+        $response["status"] = "erroe";
+        $response["message"] = "error uploading file";
+        return $this->response->withJson($response)->withStatus(200);
+    }
+
+    $fileloc = $directory . '\\'. $fileName;
+
     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
     $reader->setReadDataOnly(TRUE);
-    $spreadsheet = $reader->load($newfile);
-
+    $spreadsheet = $reader->load($fileloc);
     $worksheet = $spreadsheet->getActiveSheet();
     // Get the highest row and column numbers referenced in the worksheet
     $highestRow = $worksheet->getHighestRow(); // e.g. 10
     $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
-
     $range = $highestColumn.$highestRow;
 
     $dataArray = $spreadsheet->getActiveSheet()
@@ -51,36 +62,64 @@ $app->post('/addQuestions', function ($request, $response, $args) {
         array_push($questions,$temp);
     }
 
-    // $table_name = "users";
-    // $column_names = array(`course_id`,`question`,`option_a`,`option_b`,`option_c`,`option_d`,`correct_option`);
-    // $result = $db->insertIntoTable($r, $column_names, $table_name);
 
     $sql = "INSERT INTO `questions` (`course_id`,`question`,`option_a`,`option_b`,`option_c`,`option_d`,`correct_option`) VALUES ";
     $valuesArr = array();
     foreach($questions as $row){
-        $question = mysqli_real_escape_string($conn, $row['question'] );
-        $option_a = mysqli_real_escape_string($conn, $row['option_a'] );
-        $option_b = mysqli_real_escape_string($conn, $row['option_b'] );
-        $option_c = mysqli_real_escape_string($conn, $row['option_c'] );
-        $option_d = mysqli_real_escape_string($conn, $row['option_d'] );
-        $correct_option = mysqli_real_escape_string($conn, $row['correct_option'] );
-        $valuesArr[] = "('$course_id','$question', '$option_a','$option_b','$option_c','$option_d','$correct_option')";
+        $course_id = $course_id++;
+        $question = $db->clean_input( $row['question'] );
+        $option_a = $db->clean_input( $row['option_a'] );
+        $option_b = $db->clean_input( $row['option_b'] );
+        $option_c = $db->clean_input( $row['option_c'] );
+        $option_d = $db->clean_input( $row['option_d'] );
+        $correct_option = $db->clean_input( $row['correct_option'] );
+        $valuesArr[] = "('$course_id', '$question', '$option_a', '$option_b', '$option_c', '$option_d', '$correct_option')";
     }
 
     $sql .= implode(',', $valuesArr);
-    $conn = $db->getconnpermission();
-    if($conn->query($sql)){
-		$response['status'] = 200;
-		$response['message'] = 'success';
-    }else{
-		$response['status'] = 201;
-		$response['message'] = 'error';
+    $result = $db->insertloop($sql);
+    if ($result == true) {
+        $response["status"] = "success";
+        $response["message"] = "questions uploaded";
+        // echoResponse(200, $response);
+        return $this->response->withJson($response)->withStatus(200);
+    } else {
+        $response["status"] = "main error";
+        $response["message"] = "main error uploading question";
+        // echoResponse(201, $response);
+        return $this->response->withJson($response)->withStatus(201);
     }
-    return json_encode($response);
-    // $questions = json_encode($questions);
+    // return $result;
+});
 
-    // return $questions;
-
+$app->post('/getQuestions', function($request, $response){
+    $db = new DbHandler();
+    $response = array();
+    $r = json_decode($request->getBody());
+    verifyRequiredParams(array('limit'),$r);
+    $limit = $r->limit;
+    $resp = $db->getAllrecords("SELECT * from questions ORDER BY RAND()");
+    $response["status"] = "success";
+    $response["questions"] = array();
+    while($questions = $resp->fetch_assoc()) {
+        $tmp = array();
+        $options = array();
+        $options['option_a'] = $questions['option_a']; 
+        $options['option_b'] = $questions['option_b']; 
+        $options['option_c'] = $questions['option_c']; 
+        $options['option_d'] = $questions['option_d']; 
+        $tmp["id"] = $questions["id"];
+        $tmp["question"] = $questions["question"];
+        $tmp["answer"] = $questions["correct_option"];
+        $tmp["options"] = $options;
+        $tmp["explanation"] = $questions["explanation"];
+        $tmp["isAnswered"] = $questions["isAnswered"];
+        $tmp["picked"] = $questions["picked"];
+        
+        array_push($response["questions"], $tmp);
+        array_push($options, $options);
+    }
+    return $this->response->withJson($response)->withStatus(200);
 });
 
 ?>

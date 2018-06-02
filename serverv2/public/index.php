@@ -35,11 +35,22 @@ require './../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+use Slim\Http\Environment as Environment;
+use Slim\Http\Request;
+use Slim\Http\Response;
+use Slim\Http\UploadedFile;
 
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
-$app = new \Slim\App($settings);
+$app = new \Slim\App([
+    'settings' => [
+      'displayErrorDetails' => true
+    ]
+]);
+    
+$container = $app->getContainer();
+$container['upload_directory'] = __DIR__ . '\\excelfiles';
+
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
@@ -47,6 +58,12 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
+
+
+
+// $env = Environment::mock(); 
+// $directory = UploadedFile::createFromEnvironment($env);
+
 // Handlers
 require_once  __DIR__ . '/../src/dbHandler.php';
 

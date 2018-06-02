@@ -11,6 +11,23 @@ class DbHandler {
         $this->conn = $db->connect();
     }
 
+    public static function clean_input($in) {
+		$res = stripslashes($in);
+		$res = trim($res);
+		return $res;
+	}
+
+    public function insertloop($sql) {
+		if ($q=$this->conn->prepare ( $sql )) {
+	        if ($q->execute()) {
+	            return true;
+	        }else{
+	        	return false;
+	        }
+        }
+        // return $sql;
+    }
+    
     /**
      * Fetching single record
      */
