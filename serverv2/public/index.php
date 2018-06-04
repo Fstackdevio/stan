@@ -49,7 +49,8 @@ $app = new \Slim\App([
 ]);
     
 $container = $app->getContainer();
-$container['upload_directory'] = __DIR__ . '\\excelfiles';
+$container['upload_directory'] = dirname(dirname(dirname(__FILE__))) . '\\' . 'uploads';
+// $container['upload_directory'] = 'C:\xampp\htdocs\stan\uploads';
 
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);

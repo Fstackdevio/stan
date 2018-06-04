@@ -1,36 +1,26 @@
 <?php
-$app->post('/addQuestions', function($request, $response, $args){
+$app->get('/quest', function($request, $response, $args){
+    $response = array();
+    $directory = $this->get('upload_directory'); 
+    $response['loc'] = $directory;
+    return $this->response->withJson($response)->withStatus(200);
+});
+
+$app->post('/addQuestions', function($request, $response){
     $response = array();
     $r = json_decode($request->getBody());
+    verifyRequiredParams(array('filename','username','course_id','explanation'),$r);
     $db = new DbHandler();
     // $data = $request->getParsedBody();
 
     // $course_id = $r->course;
-    $course_id = 1;
-    $explanation = "";
+    $fileName = $r->filename;
+    $name = $r->username;
+    $course_id = $r->course_id;
+    $explanation = $r->explanation;
     $picked = "";
-    $name = "test";
-
-    $files = $request->getUploadedFiles();
-    $directory = $this->get('upload_directory');
-    if (empty($files['questions'])) {
-        throw new Exception('Expected a file');
-    }
-    $file = $files['questions'];
-
-    if ($file->getError() === UPLOAD_ERR_OK) {
-        $fileName = $file->getClientFilename();
-        $file->moveTo("$directory\\$fileName");
-        // $response['status'] = "success";
-        // $response['message'] = $files;
-        // $response['filename'] = $fileName;
-        // $response['filedir'] = $file;
-        // $response['filesee'] = "$directory\\$fileName";
-    }else{
-        $response["status"] = "erroe";
-        $response["message"] = "error uploading file";
-        return $this->response->withJson($response)->withStatus(200);
-    }
+    
+    $directory = $this->get('upload_directory');    
 
     $fileloc = $directory . '\\'. $fileName;
 
@@ -107,10 +97,8 @@ $app->post('/getQuestions', function($request, $response){
     $response = array();
     $r = json_decode($request->getBody());
     verifyRequiredParams(array('limit'),$r);
-    // $limit = $r->limit;
-    // $qid = $r->qid;
-    // $cid = $r->cid;
-    $resp = $db->getAllrecords("SELECT * from questions ORDER BY RAND()");
+    $cid = $r->course_id;
+    $resp = $db->getAllrecords("SELECT * FROM questions WHERE course_id = $cid ORDER BY RAND()");
     $response["status"] = "success";
     $response["questions"] = array();
     $test = array();

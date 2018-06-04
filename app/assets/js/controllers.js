@@ -40,7 +40,6 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
     	if(res.data._id !== ''){
     		$state.go('preview');
     	}
-    	
 	});
 
 	// $http.get('http://localhost/stan/server/v1/getExams').then(function(res){
