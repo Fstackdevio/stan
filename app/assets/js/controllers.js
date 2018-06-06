@@ -85,7 +85,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 					for(var i=0; i<$rootScope.allExams.length; i++){
 						console.log($rootScope.allExams[i].pwd);
 						if(form.password == $rootScope.allExams[i].pwd){
-							//console.log($rootScope.allExams[i].duration);
+							console.log($rootScope.allExams[i].duration);
 							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.allExams[i].duration, inSeconds:$rootScope.allExams[i].duration*60}));
 
 							$http.post('http://localhost/stan/server/v1/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
@@ -231,11 +231,16 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
         	end = begin + $scope.itemsPerPage;
 
         	$scope.filteredQuestions = $rootScope.allQuestions.slice(begin, end);
-        });
+		});
+
+
         $scope.submitQuiz = function(){
-    		for (var i = $scope.allQuestions.length - 1; i >= 0; i--) {
-    			console.log($scope.allQuestions[i].picked + ' ' + $scope.allQuestions[i].isAnswered);
-    		}
+			$scope.submittable = [];
+			//gather the options for all the questions.
+    		for (var i = $scope.allQuestions.length - 1; i >= 0; i--) {	
+				$scope.submittable.push({qid: $scope.allQuestions[i].id, choice: $scope.allQuestions[i].picked});
+			}
+			//console.log($scope.submittable);
     		swal({   
 	        title: "Submit Exam",   
 	        text: "Are you sure you want to submit?",   
@@ -299,7 +304,7 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	      				clearInterval(timeinterval);
 	      				$scope.chartPercent = 0;
 	      				$rootScope.showAlert('warning','Your quiz would be submitted shortly','Time Up');
-	      				console.log('timeUp');
+	      				console.log('Time up, to submit exam');
 	    			} else{	    				
 	    				$timeout(function(){
 	    					$scope.chartPercent = t.percent;

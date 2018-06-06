@@ -1,7 +1,7 @@
 {"exams": [{
 	"name": "Select a course",
 	"pwd": "",
-	"duration": 60,
+	"duration": 0,
 	"instructions": "",
 	"disabled" : true,
 	"unit" : 0,
@@ -9,7 +9,7 @@
 },{
 	"name": "CSC 313",
 	"pwd": "happy",
-	"duration": 60,
+	"duration": 1,
 	"instructions": "Attempt all 70 questions in 1 hour",
 	"disabled" : false,
 	"unit" : 3,
@@ -17,7 +17,7 @@
 }, {
 	"name": "GST 221",
 	"pwd": "crowned",
-	"duration": 90,
+	"duration": 2,
 	"instructions": "Attempt all 70 questions in 1 hour",
 	"disabled" : false,
 	"unit" : 2,
@@ -25,7 +25,7 @@
 }, {
 	"name": "CHM 417",
 	"pwd": "peas",
-	"duration": 30,
+	"duration": 1,
 	"instructions": "Attempt all 70 questions in 1 hour",
 	"disabled" : false,
 	"unit" : 3,
@@ -33,7 +33,7 @@
 }, {
 	"name": "BLY 225",
 	"pwd": "diamonds",
-	"duration": 90,
+	"duration": 3,
 	"instructions": "Attempt all 70 questions in 1 hour",
 	"disabled" : false,
 	"unit" : 1,
