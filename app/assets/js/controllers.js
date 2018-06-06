@@ -233,14 +233,18 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
         	$scope.filteredQuestions = $rootScope.allQuestions.slice(begin, end);
 		});
 
-
-        $scope.submitQuiz = function(){
+		$scope.extractor = function(){
 			$scope.submittable = [];
 			//gather the options for all the questions.
     		for (var i = $scope.allQuestions.length - 1; i >= 0; i--) {	
 				$scope.submittable.push({qid: $scope.allQuestions[i].id, choice: $scope.allQuestions[i].picked});
 			}
-			//console.log($scope.submittable);
+			console.log($scope.submittable);
+			return;
+		}
+
+
+        $scope.submitQuiz = function(){
     		swal({   
 	        title: "Submit Exam",   
 	        text: "Are you sure you want to submit?",   
@@ -253,7 +257,8 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	        closeOnCancel: true 
 	    }, function(isConfirm){  
 	        if (isConfirm) {  
-	            swal("Success", "Your exam was successfully submitted.", "success");
+				swal("Success", "Your exam was successfully submitted.", "success");
+				$scope.extractor();
 	        }
 	    });
 
@@ -303,7 +308,8 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	    			if (t.total <= 0) {
 	      				clearInterval(timeinterval);
 	      				$scope.chartPercent = 0;
-	      				$rootScope.showAlert('warning','Your quiz would be submitted shortly','Time Up');
+						  $rootScope.showAlert('warning','Your quiz would be submitted shortly','Time Up');
+						  $scope.extractor();
 	      				console.log('Time up, to submit exam');
 	    			} else{	    				
 	    				$timeout(function(){
