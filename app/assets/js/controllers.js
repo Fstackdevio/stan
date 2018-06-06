@@ -310,6 +310,8 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	      				$scope.chartPercent = 0;
 						  $rootScope.showAlert('warning','Your quiz would be submitted shortly','Time Up');
 						  $scope.extractor();
+						//   $scope.sendResponses()
+						  //$scope.logout()
 	      				console.log('Time up, to submit exam');
 	    			} else{	    				
 	    				$timeout(function(){
