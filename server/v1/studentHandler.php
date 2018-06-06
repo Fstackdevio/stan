@@ -15,7 +15,7 @@ $app->get('/getStudents', function() {
         $tmp["firstname"] = $student["firstname"];
         $tmp["lastname"] = $student["lastname"];
         $tmp["othername"] = $student["othername"];
-        $tmp["fullname"] = $student["fullname"];        
+        $tmp["fullName"] = $student["fullName"];        
         $tmp["level"] = $student["level"];
         $tmp["department"] = $student["department"];
         $tmp["reg_number"] = $student["reg_number"];

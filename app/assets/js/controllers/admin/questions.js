@@ -37,8 +37,11 @@ app.controller('adminCtrl.addQuestionsCtrl',  ['$scope','$http','$rootScope','$s
 	$scope.selectedExam = "Select a course";
 
 	var cid = null;
-	$http.get('http://localhost/stan/serverv2/public/getExams').then(function(res){
+	$http.get('http://localhost/cbt/serverv2/public/addQuestions').then(function(res){
 		console.log(res.data.exams);
+		$scope.subject = "";
+		$scope.explanation = "";
+
 		$rootScope.allExams = res.data.exams;
 		$rootScope.getid = function(selected){
 			for(var i in $rootScope.allExams){
@@ -55,31 +58,36 @@ app.controller('adminCtrl.addQuestionsCtrl',  ['$scope','$http','$rootScope','$s
 	})	
 
 	$scope.save = function(){
-		var file = $scope.questionfile;
-		// console.log('file is ' );
-		// console.dir(file);
-		var uploadUrl = "/stan/uploads/upload.php";
-		var response = fileUpload.uploadFileToUrl(file, uploadUrl);
-		// console.log(response);
-		var username = $scope.subject;
-		var course_id = cid;
-		var explanation = $scope.explanation;
-		var fn = file.name;
+		if($scope.subject === "" || $scope.explanation === "" || cid === "" || $scope.selectedExam === ""){
+			var file = $scope.questionfile;
+			// console.log('file is ' );
+			// console.dir(file);
+			var uploadUrl = "/cbt/uploads/upload.php";
+			var response = fileUpload.uploadFileToUrl(file, uploadUrl);
+			// console.log(response);
+			var username = $scope.subject;
+			var course_id = cid;
+			var explanation = $scope.explanation;
+			var fn = file.name;
 
-		var data = JSON.stringify({
-			filename : fn,
-			username: username,
-			course_id: course_id,
-			explanation : explanation
-		});
-		console.log(data);
-		$http.post("http://localhost/stan/serverv2/public/addQuestions", data).then(function(response){
-			if (response.data) { 
-				console.log(response.data);
-			} else {                
-				console.log("error info");
-			}
-		})
+			var data = JSON.stringify({
+				filename : fn,
+				username: username,
+				course_id: course_id,
+				explanation : explanation
+			});
+			console.log(data);
+			$http.post("http://localhost/cbt/serverv2/public/addQuestions", data).then(function(response){
+				if (response.data) { 
+					console.log(response.data);
+				} else {                
+					console.log("error info");
+				}
+			})
+		}else{
+			// console.log("please all input are required");
+			SweetAlert.swal('Error','please all input are required', 'Error'); 
+		}
 	}
 }])
 
@@ -90,7 +98,7 @@ app.controller('adminCtrl.viewQuestionsCtrl', ['$scope','$http','$rootScope','$s
 
 	var cid = null;
 
-	$http.get('http://localhost/stan/serverv2/public/getExams').then(function(res){
+	$http.get('http://localhost/cbt/serverv2/public/getExams').then(function(res){
 		console.log(res.data.exams);
 		$rootScope.allExams = res.data.exams;
 		$rootScope.getid = function(selected){
@@ -115,13 +123,13 @@ app.controller('adminCtrl.viewQuestionsCtrl', ['$scope','$http','$rootScope','$s
 		console.log(data);
 
 		if(cid !== null){
-			$http.post("http://localhost/stan/serverv2/public/getQuestions", data).then(function(response){
+			$http.post("http://localhost/cbt/serverv2/public/getQuestions", data).then(function(response){
 				if (response.data) { 
 					// $scope.students = response.data;
 					console.log(response.data.questions);
 					$scope.students = response.data.questions;
 				} else {                
-					// SweetAlert.swal('Error','Couldnot Connect to Database');  
+					SweetAlert.swal('Error','Couldnot Connect to Database', 'Error');  
 				}
 			})
 		}else{

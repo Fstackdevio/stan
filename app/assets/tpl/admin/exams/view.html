@@ -45,15 +45,15 @@
                                 <td>{{exam.instructor}}</td>
                                 <td ng-disabled="exam.pwd == '-'">
 	                                <div class="row">
-	                                	<div class="col-md-5">
+	                                	<div class="col-md-4">
 	                                		<a ui-sref="admin.editExam({data: exam._id})" class="btn btn-info" tooltip="Edit" flow="down">
-	                                			<span class="col-md-3"><i class="ti-pencil"></i></span>
+	                                			<span class="col-md2"><i class="ti-pencil"></i></span>
 	                                		</a>
 	                                	</div>	
 	                                	<div class="col-md-1"></div>
-	                                	<div class="col-md-5">
+	                                	<div class="col-md-4">
 	                                		<button ng-click="doDeleteExam($index,exam._id,exam)" class="btn btn-danger" tooltip="Delete" flow="down">
-	                                			<span class="col-md-3"><i class="ti-trash"></i></span>
+	                                			<span class="col-md-2"><i class="ti-trash"></i></span>
 	                                		</button>
 	                                	</div>
 	                                </div>

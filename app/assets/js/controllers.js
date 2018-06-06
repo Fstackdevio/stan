@@ -341,7 +341,8 @@ app.controller('testCtrl', ['$scope','quizHandler', function($scope,quizHandler)
 	
 }])
 app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function($scope,$rootScope,$http,$state){
-    $rootScope.currentPage = 'preview';
+	$rootScope.currentPage = 'preview';
+	
     $http.get('http://localhost/stan/server/v1/session').then(function(res){
     	//console.log(JSON.stringify(res));
     	if(res.status == 200){
@@ -367,6 +368,14 @@ app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function(
 			$rootScope.showAlert('error',"Sorry, an error occurred while logging you in","Error");
 		};
 	});
+
+	$scope.Logout = function(){
+		console.log("correct");
+		$http.get('http://localhost/stan/serverv2/public/logout').then(function(res){
+			$state.go('login');
+		})
+	}
+
 	$scope.startExam = function(){
 		swal({   
 	        title: "Start Exam",   
@@ -385,6 +394,8 @@ app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function(
 	        }
 	    });
 	}
+
+	
 	//for the part of not going back to the preview page, try to use a flag
 	// to chaeck....when u click start exam, a flag is set so if it's true u cannot go back to 
 	// preview but if its not u can go there....store in localstorage....

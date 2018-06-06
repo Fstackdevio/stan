@@ -26,10 +26,3 @@ $container['db'] = function ($c) {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
 };
-
-//db configuration details
-// $container['configs'] = function(){
-//     return [
-        
-//     ]
-// }

@@ -14,7 +14,11 @@ $app->get('/getExams', function() {
         $tmp["pwd"] = $exams["pwd"];
         $tmp["duration"] = $exams["duration"];
         $tmp["instructions"] = $exams["instructions"];
-        $tmp["disabled"] = $exams["disabled"];
+        if($exams["disabled"] == 1){
+            $tmp["disabled"] = true;
+        }else{
+            $tmp["disabled"] = false;
+        }
         $tmp["unit"] = $exams["unit"];
         $tmp["instructor"] =$exams["instructor"];
        /* $tmp["date_created"] = $exam["date_created"];
@@ -24,9 +28,10 @@ $app->get('/getExams', function() {
     echoResponse(200, $response);
 });
 
+
 $app->post('/setExam', function() use ($app){
     $r = json_decode($app->request->getBody());
-    verifyRequiredParams(array('name', 'duration'),$r);
+    // verifyRequiredParams(array('name', 'duration'),$r);
     $response = array();
 
     //store the given item in the session
@@ -107,7 +112,7 @@ $app->put('/editExam/:id', function($id) use ($app) {
     $response = array();
     $r = json_decode($app->request->getBody());
     $condition = array('_id'=>$id);
-    verifyRequiredParams(array('name', 'instructions', 'unit', 'duration', 'pwd', 'disabled', 'instructor'),$r);
+    // verifyRequiredParams(array('name', 'instructions', 'unit', 'duration', 'pwd', 'disabled', 'instructor'),$r);
     $db = new DbHandler();
     $name = $r->name;
     $instructions = $r->instructions;

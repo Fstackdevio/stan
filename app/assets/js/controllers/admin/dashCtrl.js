@@ -3,7 +3,7 @@ app.controller('adminCtrl.dashCtrl', ['$scope','$rootScope','$http','$state', fu
 	$scope.testing = "hehe";
 	$rootScope.thisPage = 'Dashboard';
 	$scope.isMainAdmin = 0;
-	$http.get('http://localhost/stan/server/v1/adminSession').then(function(res){
+	$http.get('http://localhost/cbt/server/v1/adminSession').then(function(res){
     	//console.log(JSON.stringify(res.data.admin_id));
     	if(res.status == 200){
     		if(res.data.admin_id == ''){

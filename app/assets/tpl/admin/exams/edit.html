@@ -7,41 +7,41 @@
                 <div class="panel-body">
                     <p>Please fill the form below edit the exam.</p>
                     <br>
-                    <form class="form-horizontal" role="form">
+                    <form class="form-horizontal" role="form" name="editExamForm" novalidate>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Title</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" ng-model="exam.name">
+                                <input required type="text" class="form-control" ng-model="exam.name">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Instructions</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="Attempt all Questions" ng-model="exam.instructions">
+                                <input required type="text" class="form-control" value="Attempt all Questions" ng-model="exam.instructions">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Course Units</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" ng-model="exam.unit">
+                                <input required type="text" class="form-control" ng-model="exam.unit">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Duration</label>
                             <div class="col-md-7">
-                                <input type="text" placeholder="Allocated time for exam in minutes" class="form-control" ng-model="exam.duration">
+                                <input required type="text" placeholder="Allocated time for exam in minutes" class="form-control" ng-model="exam.duration">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Password</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" ng-model="exam.pwd">
+                                <input required type="text" class="form-control" ng-model="exam.pwd">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Instructor</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" ng-model="exam.instructor">
+                                <input required type="text" class="form-control" ng-model="exam.instructor">
                             </div>
                         </div>
                         <div class="form-group" style="margin-left: 10%;">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button ng-click="saveExamEdit(exam.id,exam)" type="submit" class="btn btn-nav_right btn-lg btn-primary waves-effect waves-dark">Save</button>
+                            <input ng-click="saveExamEdit(exam.id,exam)" ng-disabled="editExamForm.$invalid" type="submit" class="btn btn-nav_right btn-lg btn-primary waves-effect waves-dark" value="Save"/>
                         </div>
                     </form>
                 </div>

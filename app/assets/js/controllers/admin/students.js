@@ -16,7 +16,7 @@ app.controller('adminCtrl.addStdCtrl', ['$scope','$rootScope','$http', function(
 			reg_number: std.reg_number,
 			department: std.department
 		};
-		$http.post('http://localhost/stan/server/v1/addStudent', student).then(function(res){
+		$http.post('http://localhost/stan/serverv2/public/addStudent', student).then(function(res){
 			if(res.data.status == "success"){
 				$rootScope.showAlert(res.data.status,res.data.message,'Success');
 			} else {
@@ -33,8 +33,9 @@ app.controller('adminCtrl.viewStdCtrl', ['$scope','$rootScope','$http','DTOption
     $scope.dtOptions = DTOptionsBuilder.newOptions().withDisplayLength(7).withBootstrap()
         //.withPaginationType('full_numbers')
         .withOption('bLengthChange', false);
-	$http.get('http://localhost/stan/server/v1/getStudents').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/getStudents').then(function(res){
 		$scope.studentsList = res.data.students;
+		// console.log(res);
 	});
 
 	$scope.viewMore = function(id){
@@ -50,7 +51,7 @@ app.controller('adminCtrl.viewStdCtrl', ['$scope','$rootScope','$http','DTOption
 
 	//delete function
 	$scope.doDeleteStd = function(index,id,resource){
-		$scope.url = 'http://localhost/stan/server/v1/deleteStd/'+id;
+		$scope.url = 'http://localhost/stan/serverv2/public/deleteStd/'+id;
 		swal({
 			title: 'Warning',
 			text: 'Are you sure you want to delete?',
@@ -88,7 +89,7 @@ app.controller('adminCtrl.editStdCtrl', ['$scope','$rootScope','$stateParams','$
 	$rootScope.thisPage = "Edit Student";
 	$scope.id = $stateParams.data;
 
-	$http.get('http://localhost/stan/server/v1/getStudents').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/getStudents').then(function(res){
 		$scope.allStudents = res.data.students;
 		for (var i = $scope.allStudents.length - 1; i >= 0; i--) {
 			if($scope.allStudents[i]._id == $scope.id[0]){
@@ -99,13 +100,16 @@ app.controller('adminCtrl.editStdCtrl', ['$scope','$rootScope','$stateParams','$
 	});
 
 	$scope.saveStdEdit = function(resource){
-		$scope.url = 'http://localhost/stan/server/v1/editStudent/'+$scope.id;
-		console.log($scope.url);
+		$scope.url = 'http://localhost/stan/serverv2/public/editStudent/'+$scope.id;
+		// console.log($scope.url);
+		var username = document.getElementById('username').value;
+		resource.username = username;
 		console.log(JSON.stringify(resource));
 		$http.put($scope.url, resource).then(function(res){
 			console.log(res.data);
 			if(res.data.status === "Success"){
 				$rootScope.showAlert("success",res.data.message,res.data.status);
+				$state.go('admin.viewStudent')
 			}else if(res.data.status === "Error"){
 				$rootScope.showAlert("error",res.data.message,res.data.status);
 			}else{

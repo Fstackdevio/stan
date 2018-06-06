@@ -15,7 +15,7 @@ app.controller('adminCtrl.addExamsCtrl', ['$scope','$rootScope','$http', functio
 			unit: details.units,
 			instructor: details.instructor
 		};
-		$http.post('http://localhost/stan/server/v1/addExam', exam).success(function(res){
+		$http.post('http://localhost/stan/serverv2/public/addExam', exam).success(function(res){
 			if(res.status == 'success'){
 				$rootScope.showAlert(res.status,res.message,'Success');
 				$scope.exam = '';
@@ -31,13 +31,13 @@ app.controller('adminCtrl.viewExamsCtrl', ['$scope','$rootScope','$http','DTOpti
 	// DataTable options
     $scope.dtOptions = DTOptionsBuilder.newOptions().withDisplayLength(7).withBootstrap().withOption('bLengthChange', true);
 
-	$http.get('http://localhost/stan/server/v1/getExams').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/getExams').then(function(res){
 		$scope.examsList = res.data.exams;
 	});
 
 	//delete function
 	$scope.doDeleteExam = function(index,id,resource){
-		$scope.url = 'http://localhost/stan/server/v1/deleteExam/'+id;
+		$scope.url = 'http://localhost/stan/serverv2/public/deleteExam/'+id;
 		//console.log($scope.url);
 		swal({
 			title: 'Warning',
@@ -78,33 +78,36 @@ app.controller('adminCtrl.downloadExamsCtrl', ['$scope','$rootScope', function($
 app.controller('adminCtrl.editExamsCtrl', ['$scope','$rootScope','$stateParams','$http', function($scope,$rootScope,$stateParams,$http){
 	$rootScope.thisPage = "Edit Exams";
 	$scope.exam = {};
-	$scope.exam.disabled = true;
+	// $scope.exam.disabled = false;
 	$scope.id = $stateParams.data;
 
-	$http.get('http://localhost/stan/server/v1/getExams').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/getExams').then(function(res){
 		$scope.examsList = res.data.exams;
 		for (var i = $scope.examsList.length - 1; i >= 0; i--) {
 			if($scope.examsList[i]._id == $scope.id){
 				$scope.exam = $scope.examsList[i];
-				//console.log($scope.exam);
+				console.log($scope.exam);
 			}
 		}
 	});
 
 	$scope.saveExamEdit = function(id,resource){
 		// console.log('save btn clicked '+ id);
-		$scope.url = 'http://localhost/stan/server/v1/editExam/'+$scope.id;
+		$scope.url = 'http://localhost/stan/serverv2/public/editExam/'+$scope.id;
 		//console.log($scope.url);
-		console.log(JSON.stringify(resource));
 		$http.put($scope.url, resource).then(function(res){
 			console.log(res.data);
 			if(res.data.status === "Success"){
 				$rootScope.showAlert("success",res.data.message,res.data.status);
+				$state.go('admin.viewExam');
 			}else if(res.data.status === "Error"){
 				$rootScope.showAlert("error",res.data.message,res.data.status);
+				$state.go('admin.viewExam');
 			}else{
 				$rootScope.showAlert(res.data.status,res.data.message,res.data.status);
+				$state.go('admin.viewExam');
 			}
 		})
+		
 	}
 }])

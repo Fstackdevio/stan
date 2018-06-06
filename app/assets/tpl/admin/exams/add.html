@@ -7,17 +7,17 @@
                 <div class="panel-body">
                     <p>Please fill the form below accurately to create a new exam.</p>
                     <br>
-                    <form class="form-horizontal" role="form" ng-submit="createExam(exam)">
+                    <form class="form-horizontal" role="form" ng-submit="createExam(exam)" name="addExamForm" novalidate>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Title</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" ng-model="exam.title" placeholder="Name of the exam that would be displayed">
+                                <input required type="text" class="form-control" ng-model="exam.title" placeholder="Name of the exam that would be displayed">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Instructions</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" value="Attempt all questions" placeholder="e.g Answer all questions" ng-model="exam.instructions">
+                                <input required type="text" class="form-control" value="Attempt all questions" placeholder="e.g Answer all questions" ng-model="exam.instructions">
                             </div>
                             <!-- <span class="col-md-2">
                                 <button type="button" class="btn btn-primary" ng-click="instructionDisabled = false"><i class="ti-pencil"></i></button>
@@ -26,25 +26,25 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">Course Units</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" ng-model="exam.units" placeholder="Course Unit">
+                                <input required type="text" class="form-control" ng-model="exam.units" placeholder="Course Unit">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Duration</label>
                             <div class="col-md-7">
-                                <input type="text" placeholder="Allocated time for exam in minutes e.g 120 for 2 hours" class="form-control" ng-model="exam.duration">
+                                <input required type="text" placeholder="Allocated time for exam in minutes e.g 120 for 2 hours" class="form-control" ng-model="exam.duration">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Password</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" placeholder="Any english word" ng-model="exam.password">
+                                <input required type="text" class="form-control" placeholder="Any english word" ng-model="exam.password">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 control-label">Exam Instructor</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" placeholder="e.g Mr. John Doe" ng-model="exam.instructor">
+                                <input required type="text" class="form-control" placeholder="e.g Mr. John Doe" ng-model="exam.instructor">
                             </div>
                         </div>
                         <div class="form-group" style="margin-left: 10%;">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-nav_right btn-lg btn-primary waves-effect waves-dark">Create</button>
+                            <input type="submit" class="btn btn-nav_right btn-lg btn-primary waves-effect waves-dark" ng-disabled="addExamForm.$invalid" value="Create" />
                         </div>
                     </form>
                 </div>
