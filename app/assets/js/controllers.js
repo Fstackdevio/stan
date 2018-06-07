@@ -36,14 +36,14 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 	
 	$scope.selectedExam = "Select a course";
 
-	$http.get('http://localhost/stan/server/v1/session').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/session').then(function(res){
     	if(res.data._id !== ''){
     		$state.go('preview');
     	}
 	});
 
 	// $http.get('http://localhost/stan/server/v1/getExams').then(function(res){
-	$http.get('http://localhost/stan/app/assets/apis/exams.json').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/getExams').then(function(res){
 		// console.log(res);
 		$rootScope.allExams = res.data.exams;
 		$rootScope.showPassword = function(selected){
@@ -77,7 +77,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 	/*****8**** the main login function ****8*****/
 	$scope.login = function(form,selectedExam){
 		if(form.password == $rootScope.showPassword(selectedExam)){
-			$http.post('http://localhost/stan/server/v1/login', form)
+			$http.post('http://localhost/stan/serverv2/public/login', form)
 			.then(function(res){
 				if(res.data.status == "success"){
 					//console.log("logged in");
@@ -88,7 +88,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 							console.log($rootScope.allExams[i].duration);
 							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.allExams[i].duration, inSeconds:$rootScope.allExams[i].duration*60}));
 
-							$http.post('http://localhost/stan/server/v1/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
+							$http.post('http://localhost/stan/serverv2/public/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
 								console.log(response.data);
 							});
 						};
@@ -122,7 +122,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 app.controller('regCtrl', ['$scope','$http', function($scope,$http){
 	$scope.feedback = "not yet sent";
 	$scope.addUser = function(user){
-	$http.post('http://localhost/stan/server/v1/newStudent', user).then(function(res){
+	$http.post('http://localhost/stan/serverv2/public/newStudent', user).then(function(res){
 		console.log(res.data);
 		$scope.feedback = res.data.message;
 	})
@@ -135,7 +135,7 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	$scope.currentCourse = "Chemistry";	
 	$scope.examTime = JSON.parse(localStorage.getItem('examTime'));
 
-	$http.get('http://localhost/stan/server/v1/session').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/session').then(function(res){
     	if(res.data._id == ''){
     		$state.go('login');
     	}
@@ -343,11 +343,11 @@ app.controller('testCtrl', ['$scope','quizHandler', function($scope,quizHandler)
 app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function($scope,$rootScope,$http,$state){
 	$rootScope.currentPage = 'preview';
 	
-    $http.get('http://localhost/stan/server/v1/session').then(function(res){
+    $http.get('http://localhost/stan/serverv2/public/session').then(function(res){
     	//console.log(JSON.stringify(res));
     	if(res.status == 200){
     		$rootScope.exam = [];
-    		$http.get('http://localhost/stan/server/v1/examSession').then(function(resp){
+    		$http.get('http://localhost/stan/serverv2/public/examSession').then(function(resp){
 				if (resp.status == 200) {
 					$rootScope.exam = resp.data.message;
 				} else {
@@ -409,7 +409,7 @@ app.controller('adminCtrl', ['$scope','$rootScope','$http','$state', function($s
 
 	$rootScope.adminInfo = {};
 
-	$http.get('http://localhost/stan/server/v1/adminSession').then(function(res){
+	$http.get('http://localhost/stan/serverv2/public/adminSession').then(function(res){
 		$rootScope.adminInfo = res.data;
     		if(res.data.admin_id !== ''){
     			$state.go('admin.dashboard');
@@ -419,7 +419,7 @@ app.controller('adminCtrl', ['$scope','$rootScope','$http','$state', function($s
 	});
 
 	$scope.adminLogout = function(){
-		$http.get('http://localhost/stan/server/v1/adminLogout').then(function(res){
+		$http.get('http://localhost/stan/serverv2/public/adminLogout').then(function(res){
 			console.log(JSON.stringify(res.data));
 			$rootScope.showAlert('success',res.data.message,'Success');
 			$state.go('adminLogin');
