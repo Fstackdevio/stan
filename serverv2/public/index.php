@@ -90,6 +90,7 @@ require __DIR__ . '/../src/adminAuth.php';
 require __DIR__ . '/../src/examsHandler.php';
 require __DIR__ . '/../src/studentHandler.php';
 require __DIR__ . '/../src/questionsHandler.php';
+require __DIR__ . '/../src/resultHandler.php';
 
 
 
