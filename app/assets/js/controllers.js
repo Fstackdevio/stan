@@ -253,30 +253,24 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
         	$scope.filteredQuestions = $rootScope.allQuestions.slice(begin, end);
 		});
 
+		$scope.Logout = function(){
+			console.log("correct");
+			$http.get('http://localhost/stan/serverv2/public/logout').then(function(res){
+				$state.go('login');
+			})
+		}
+
 		function submitExams(data){
 			$http.post('http://localhost/stan/serverv2/public/setResult', data).then(function(response){
-				console.log(response.data);
-				if(response.status == "success"){
-					$state.go("login");
-					console.log(response.data);
+				console.log(response.data.status);
+				if(response.data.status == "success"){
+					$scope.Logout();
 				}else{
 					// sweet alert error submitting exams
-					swal("Success", "Your exam was successfully submitted.", "success");
+					swal("Error", "Error submitting examination.", "error");
 				}
 			});
 		}
-
-		// {
-		// 	"qnA":[
-		// 		{"qid":3,"choice":""},
-		// 		{"qid":1,"choice":""},
-		// 		{"qid":5,"choice":""},
-		// 		{"qid":2,"choice":""},
-		// 		{"qid":4,"choice":"4.4"}
-		// 	],
-		// 	"userId":"1",
-		// 	"courseId":3
-		// }
 
 		$scope.extractor = function(){
 			$scope.submittable = [];
@@ -288,12 +282,6 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 			var quid = $scope.submittable;
 			var userseesid = userid;
 			var course_id = String(coursesessid);
-
-			// var dat = JSON.stringify({
-			// 	qnA : quid,
-			// 	userId : userseesid,
-			// 	courseId : course_id
-			// });
 
 			var dat = {
 				qnA : quid,

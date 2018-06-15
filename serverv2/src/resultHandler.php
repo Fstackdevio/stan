@@ -77,9 +77,12 @@ $app->post('/setResult', function($request, $response){
                     }
                 }else{
                    if($isActiveExist['valid'] == 1){
-                        $updateValidator = $db->updatey( 'outcomes', array('valid'), "_id='$cid'");
+                        $updateValidator = $db->updatey( 'outcomes', array('valid' => 0), "_id='$cid'");
                         if($updateValidator != null){
-                           $newResult = $db->insertIntoTable(array($stuId, $orig, 1, $cid), array('std_id', 'score', 'valid', 'course_id'), $table_name);
+                           $values = array($stuId, $orig, 1, $cid);
+                            $fields = array('std_id', 'score', 'valid', 'course_id');
+                            $table = 'outcomes';
+                            $newResult = $db->insert($table, $fields,  $values);
                            if($newResult != null){
                             $response["status"] = "success";
                             $response["message"] = "Examination Successfull";

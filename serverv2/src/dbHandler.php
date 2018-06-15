@@ -146,7 +146,7 @@ class DbHandler {
         }
         $spilt = implode(',',$args);
         $sql='UPDATE '.$table.' SET '.$spilt.' WHERE '.$where;
-        if($q=$this->DBcon->prepare($sql)){
+        if($q=$this->conn->prepare($sql)){
             if ($q->execute()) {
                 return true;
             }
