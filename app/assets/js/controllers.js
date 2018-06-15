@@ -98,7 +98,7 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.allExams[i].duration, inSeconds:$rootScope.allExams[i].duration*60}));
 
 							$http.post('http://localhost/stan/serverv2/public/setExam', {id: $rootScope.allExams[i]._id, name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
-								console.log(response);
+								console.log(response.data);
 							});
 						};
 					};
@@ -263,6 +263,18 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 				}
 			});
 		}
+
+		// {
+		// 	"qnA":[
+		// 		{"qid":3,"choice":""},
+		// 		{"qid":1,"choice":""},
+		// 		{"qid":5,"choice":""},
+		// 		{"qid":2,"choice":""},
+		// 		{"qid":4,"choice":"4.4"}
+		// 	],
+		// 	"userId":"1",
+		// 	"courseId":3
+		// }
 
 		$scope.extractor = function(){
 			$scope.submittable = [];
