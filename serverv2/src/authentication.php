@@ -1,5 +1,5 @@
 <?php //all functions here handle the student authentication apis
-$app->post('/session', function($request, $response){
+$app->get('/session', function($request, $response){
     $db = new DbHandler();
     $session = $db->getStuSession();
     $response = array();

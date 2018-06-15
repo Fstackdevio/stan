@@ -81,6 +81,15 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 			.then(function(res){
 				if(res.data.status == "success"){
 					//console.log("logged in");
+					// var data = {
+					// 	"id" : $rootScope.allExams[i]._id,
+					// 	"name" : $rootScope.allExams[i].name,
+					// 	"durationSec" : $rootScope.allExams[i].duration*60,
+					// 	"duration" : rootScope.allExams[i].duration,
+					// 	"unit" : $rootScope.allExams[i].unit,
+					// 	"instruction" : $rootScope.allExams[i].instructions,
+					// 	"instructor" : $rootScope.allExams[i].instructor
+					// };
 
 					for(var i=0; i<$rootScope.allExams.length; i++){
 						console.log($rootScope.allExams[i].pwd);
@@ -88,8 +97,8 @@ app.controller('loginCtrl', ['$scope','$http','$rootScope','$state','ExamData', 
 							console.log($rootScope.allExams[i].duration);
 							localStorage.setItem('examTime', JSON.stringify({time: $rootScope.allExams[i].duration, inSeconds:$rootScope.allExams[i].duration*60}));
 
-							$http.post('http://localhost/stan/serverv2/public/setExam', {name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
-								console.log(response.data);
+							$http.post('http://localhost/stan/serverv2/public/setExam', {id: $rootScope.allExams[i]._id, name: $rootScope.allExams[i].name, durationSec: $rootScope.allExams[i].duration*60, duration: $rootScope.allExams[i].duration, unit: $rootScope.allExams[i].unit, instruction: $rootScope.allExams[i].instructions, instructor: $rootScope.allExams[i].instructor}).then(function(response){
+								console.log(response);
 							});
 						};
 					};
@@ -135,20 +144,31 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	$scope.currentCourse = "Chemistry";	
 	$scope.examTime = JSON.parse(localStorage.getItem('examTime'));
 
+	var userid = null; 
+	var coursesessid = null;
+	$http.get('http://localhost/stan/serverv2/public/examSession').then(function(resp){
+    	if(resp.data.courseid == ''){
+    		$state.go('login');
+    	}else{
+    		coursesessid = resp.data.message.id;
+    	}
+	})
 	$http.get('http://localhost/stan/serverv2/public/session').then(function(res){
     	if(res.data._id == ''){
     		$state.go('login');
+    	}else{
+    		userid = res.data._id;
     	}
 	});
 
 	function randQuestion(){
-			for(var i=0; i<=$scope.questionsLength; i+=1){
-				$scope.question = $scope.allQuestions[$scope.randomNumber].question;
-				$scope.answer = $scope.allQuestions[$scope.randomNumber].answer;
-				$scope.id = $scope.allQuestions[$scope.randomNumber].id;
-				$scope.options = $scope.allQuestions[$scope.randomNumber].options[0];			
-				break;
-			};//end for loop
+		for(var i=0; i<=$scope.questionsLength; i+=1){
+			$scope.question = $scope.allQuestions[$scope.randomNumber].question;
+			$scope.answer = $scope.allQuestions[$scope.randomNumber].answer;
+			$scope.id = $scope.allQuestions[$scope.randomNumber].id;
+			$scope.options = $scope.allQuestions[$scope.randomNumber].options[0];			
+			break;
+		};//end for loop
 	};
 	
 	$scope.currentQuestion = 1;
@@ -163,12 +183,12 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 	$scope.answered = [];
 
 	$scope.exists = function(){
-	if(qid == $scope.answered[i].length && oid == $scope.answered[i].oid){
-		return true;
-	} else {
-		return false
+		if(qid == $scope.answered[i].length && oid == $scope.answered[i].oid){
+			return true;
+		} else {
+			return false
+		}
 	}
-}
 
 	/*$scope.pickAnswer = function(qid,oid){
 		if ($scope.answered.length === 0) {
@@ -233,6 +253,17 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
         	$scope.filteredQuestions = $rootScope.allQuestions.slice(begin, end);
 		});
 
+		function submitExams(data){
+			$http.post('http://localhost/stan/serverv2/public/setResult', data).then(function(response){
+				console.log(response.data);
+				if(response.status == "success"){
+					$state.go("login");
+				}else{
+					// sweet alert error submitting exams
+				}
+			});
+		}
+
 		$scope.extractor = function(){
 			$scope.submittable = [];
 			//gather the options for all the questions.
@@ -240,7 +271,21 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 				$scope.submittable.push({qid: $scope.allQuestions[i].id, choice: $scope.allQuestions[i].picked});
 			}
 			console.log($scope.submittable);
-			return;
+			console.log(userid);
+			console.log(coursesessid);
+
+			var  quid = $scope.submittable;
+			var userseesid = userid;
+			var course_id = coursesessid;
+
+			var dat = JSON.stringify({
+				qnA : quid,
+				userId : userseesid,
+				courseId : course_id
+			});
+
+			console.log(dat);
+			submitExams(dat);
 		}
 
 
@@ -344,10 +389,11 @@ app.controller('previewCtrl', ['$scope','$rootScope','$http','$state', function(
 	$rootScope.currentPage = 'preview';
 	
     $http.get('http://localhost/stan/serverv2/public/session').then(function(res){
-    	//console.log(JSON.stringify(res));
+    	console.log(JSON.stringify(res));
     	if(res.status == 200){
     		$rootScope.exam = [];
     		$http.get('http://localhost/stan/serverv2/public/examSession').then(function(resp){
+    			console.log(resp.data.message);
 				if (resp.status == 200) {
 					$rootScope.exam = resp.data.message;
 				} else {

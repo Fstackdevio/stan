@@ -12,10 +12,10 @@ $app->post('/initResult', function() use ($app){
     }
 };*/
 
-$app->post('/setResult', function() use ($app){
-    $d = json_decode($app->request->getBody());
+$app->post('/setResult', function($request, $response){
+    $r = json_decode($request->getBody());
     verifyRequiredParams(array('userId', 'courseId', 'qnA'),$r);
-    $resp = array();
+    $response = array();
     require_once 'scoreHasher.php';
 
     $db = new DbHandler();
@@ -69,22 +69,32 @@ $app->post('/setResult', function() use ($app){
                         return $this->response->withJson($response)->withStatus($statCode);
                        }
                     } else{
-                        $resonse['status'] = "error";
-                        $resonse['message'] = "Something went wrong...";
+                        $response['status'] = "error";
+                        $response['message'] = "Something went wrong...";
                         $statCode = 201;
                         return $this->response->withJson($response)->withStatus($statCode);
                     }
+                }else{
+                    $response['status'] = "error";
+                    $response['message'] = "error getting isactive records";
+                    $statCode = 201;
+                    return $this->response->withJson($response)->withStatus($statCode);
                 }
+            }else{
+                $response['status'] = "error";
+                $response['message'] = "error getting some records";
+                $statCode = 201;
+                return $this->response->withJson($response)->withStatus($statCode);
             }
         } else {
-            $resonse['status'] = "error";
-            $resonse['message'] = "Something went wrong...";
+            $response['status'] = "error";
+            $response['message'] = "Something went wrong...";
             $statCode = 201;
             return $this->response->withJson($response)->withStatus($statCode);
         }
     } else{
-        $resonse['status'] = "error";
-        $resonse['message'] = "Invalid Session";
+        $response['status'] = "error";
+        $response['message'] = "Invalid Session";
         $statCode = 201;
         return $this->response->withJson($response)->withStatus($statCode);
         
