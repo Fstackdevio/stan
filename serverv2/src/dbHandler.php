@@ -45,22 +45,44 @@ class DbHandler {
         $r->close();
         return $tasks;
     }
+
+    public function easyqueary($SQL){
+        $q = $this->conn->query($SQL) or die("Failed");
+        while ($r = $q->FETCH_ASSOC()){
+            $data[] = $r;
+        }
+        return $data;
+    }
     /**
      * Creating new record
      */
 
-    public function easyquery($query) {
-		$r = $this->conn->prepare($query);
-		if($r->execute()){
-            return "query_executed";
-        }else{
-            return "query_error";
-        }
-	}
 
     public function getconnpermission(){
         return $this->conn;
     }
+
+    public function insert($table, array $fields, array $values) {
+        $numFields = count($fields);
+        $numValues = count($values);
+        if($numFields === 0 or $numValues === 0)
+            throw new Exception("At least one field and value is required.");
+        if($numFields !== $numValues)
+            throw new Exception("Mismatched number of field and value arguments.");
+
+        $fields = '`' . implode('`,`', $fields) . '`';
+        $values = "'" . implode("','", $values) . "'";
+        $sql = "INSERT INTO {$table} ($fields) VALUES($values)";
+        
+        if ($q=$this->conn->prepare ( $sql )) {
+            if ($q->execute()) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
     public function insertIntoTable($obj, $column_names, $table_name) {
 
         $c = (array) $obj;
@@ -115,6 +137,21 @@ class DbHandler {
             }
 
         return $response;
+    }
+
+    public function updatey($table,$values=array(),$where){
+         $args=array();
+        foreach($values as $field=>$value){
+            $args[]=$field.'="'.$value.'"';
+        }
+        $spilt = implode(',',$args);
+        $sql='UPDATE '.$table.' SET '.$spilt.' WHERE '.$where;
+        if($q=$this->DBcon->prepare($sql)){
+            if ($q->execute()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -184,6 +221,7 @@ public function getStuSession(){
         $sess["level"] = $_SESSION['level'];
         $sess["department"] = $_SESSION['department'];
         $sess["reg_number"] = $_SESSION['reg_number'];
+        $sess["active"] = $_SESSION['active'];
     }
     else
     {
@@ -193,6 +231,7 @@ public function getStuSession(){
         $sess["level"] = '';
         $sess["department"] = '';
         $sess["reg_number"] = '';
+        $sess["active"] = '';
     }
     return $sess;
 }

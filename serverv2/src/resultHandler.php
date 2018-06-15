@@ -14,7 +14,7 @@ $app->post('/initResult', function() use ($app){
 
 $app->post('/setResult', function($request, $response){
     $r = json_decode($request->getBody());
-    verifyRequiredParams(array('userId', 'courseId', 'qnA'),$r);
+    verifyRequiredParams(array('userId', 'courseId'),$r);
     $response = array();
     require_once 'scoreHasher.php';
 
@@ -39,13 +39,13 @@ $app->post('/setResult', function($request, $response){
 
             if(($uActualData['_id'] == $uid) && ($uActualData['active'] == 1) && ($cid == $eActualData['_id'])){
                 //to extractttttt
-                $qActual = $db->getAllRecords("SELECT qid, correct_option FROM questions WHERE course_id = '$cid'");
+                $qActual = $db->easyqueary("SELECT * FROM questions WHERE course_id = '$cid'");
                 $bodyKount = 0;
                 
                 for($i = 0; $i < count($qActual); $i++){
                     foreach($qnA as $qRow){
-                        if($qRow['qid'] == $qActual['qid']){
-                            if($qRow['picked'] == $qActual['correct_option']){
+                        if($qRow->qid == $qActual[$i]['qid']){
+                            if($qRow->choice == $qActual[$i]['correct_option']){
                                 $bodyKount += 10; //we're using the 10 point system incase someone tries to send dummy data later on...
                             }
                         }
@@ -58,27 +58,46 @@ $app->post('/setResult', function($request, $response){
                 //chceck for active scores...
                 $isActiveExist = $db->getOneRecord("SELECT _id, valid from outcomes WHERE std_id = '$stuId' and course_id = '$cid'");
 
-                if($isActiveExist['valid'] == 1){
-                    $updateValidator = $db->updateTable( 'outcomes', array('valid'), "_id='$cid'");
-                    if($updateValidator != null){
-                       $newResult = $db->insertIntoTable(array($stuId, $orig, 1, $cid), array('std_id', 'score', 'valid', 'course_id'), $table_name);
-                       if($newResult != null){
+                if(!$isActiveExist){
+                    // $newResult = $db->insert(array($stuId, $orig, 1, $cid), array('std_id', 'score', 'valid', 'course_id'), 'outcomes');
+                    $values = array($stuId, $orig, 1, $cid);
+                    $fields = array('std_id', 'score', 'valid', 'course_id');
+                    $table = 'outcomes';
+                    $newResult = $db->insert($table, $fields,  $values);
+                    if($newResult != null){
                         $response["status"] = "success";
                         $response["message"] = "Examination Successfull";
                         $statCode = 200;
                         return $this->response->withJson($response)->withStatus($statCode);
-                       }
-                    } else{
+                    }else{
                         $response['status'] = "error";
                         $response['message'] = "Something went wrong...";
                         $statCode = 201;
-                        return $this->response->withJson($response)->withStatus($statCode);
+                        return $this->response->withJson($response)->withStatus($statCode);   
                     }
                 }else{
-                    $response['status'] = "error";
-                    $response['message'] = "error getting isactive records";
-                    $statCode = 201;
-                    return $this->response->withJson($response)->withStatus($statCode);
+                   if($isActiveExist['valid'] == 1){
+                        $updateValidator = $db->updatey( 'outcomes', array('valid'), "_id='$cid'");
+                        if($updateValidator != null){
+                           $newResult = $db->insertIntoTable(array($stuId, $orig, 1, $cid), array('std_id', 'score', 'valid', 'course_id'), $table_name);
+                           if($newResult != null){
+                            $response["status"] = "success";
+                            $response["message"] = "Examination Successfull";
+                            $statCode = 200;
+                            return $this->response->withJson($response)->withStatus($statCode);
+                           }
+                        } else{
+                            $response['status'] = "error";
+                            $response['message'] = "Something went wrong...";
+                            $statCode = 201;
+                            return $this->response->withJson($response)->withStatus($statCode);
+                        }
+                    }else{
+                        $response['status'] = "error";
+                        $response['message'] = "error getting isactive records";
+                        $statCode = 201;
+                        return $this->response->withJson($response)->withStatus($statCode);
+                    } 
                 }
             }else{
                 $response['status'] = "error";

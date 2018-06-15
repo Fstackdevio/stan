@@ -258,8 +258,10 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 				console.log(response.data);
 				if(response.status == "success"){
 					$state.go("login");
+					console.log(response.data);
 				}else{
 					// sweet alert error submitting exams
+					swal("Success", "Your exam was successfully submitted.", "success");
 				}
 			});
 		}
@@ -282,19 +284,22 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
     		for (var i = $scope.allQuestions.length - 1; i >= 0; i--) {	
 				$scope.submittable.push({qid: $scope.allQuestions[i].id, choice: $scope.allQuestions[i].picked});
 			}
-			console.log($scope.submittable);
-			console.log(userid);
-			console.log(coursesessid);
 
-			var  quid = $scope.submittable;
+			var quid = $scope.submittable;
 			var userseesid = userid;
-			var course_id = coursesessid;
+			var course_id = String(coursesessid);
 
-			var dat = JSON.stringify({
+			// var dat = JSON.stringify({
+			// 	qnA : quid,
+			// 	userId : userseesid,
+			// 	courseId : course_id
+			// });
+
+			var dat = {
 				qnA : quid,
 				userId : userseesid,
 				courseId : course_id
-			});
+			};
 
 			console.log(dat);
 			submitExams(dat);
@@ -303,21 +308,21 @@ app.controller('examPageCtrl', ['$scope','$rootScope','$http','quizHandler','$ti
 
         $scope.submitQuiz = function(){
     		swal({   
-	        title: "Submit Exam",   
-	        text: "Are you sure you want to submit?",   
-	        type: "warning",   
-	        showCancelButton: true,   
-	        confirmButtonColor: "#DD6B55",   
-	        confirmButtonText: "Yes, submit!",   
-	        cancelButtonText: "No, cancel!",   
-	        closeOnConfirm: false,   
-	        closeOnCancel: true 
-	    }, function(isConfirm){  
-	        if (isConfirm) {  
-				swal("Success", "Your exam was successfully submitted.", "success");
-				$scope.extractor();
-	        }
-	    });
+		        title: "Submit Exam",   
+		        text: "Are you sure you want to submit?",   
+		        type: "warning",   
+		        showCancelButton: true,   
+		        confirmButtonColor: "#DD6B55",   
+		        confirmButtonText: "Yes, submit!",   
+		        cancelButtonText: "No, cancel!",   
+		        closeOnConfirm: false,   
+		        closeOnCancel: true 
+		    }, function(isConfirm){  
+		        if (isConfirm) {  
+					swal("Success", "Your exam was successfully submitted.", "success");
+					$scope.extractor();
+		        }
+		    });
 
     	}
 	});
