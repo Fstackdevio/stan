@@ -16,6 +16,18 @@
 
     $conn = connect();
 
+    function getAll($SQL, $conn){
+        $q = $conn->query($SQL) or die("Failed");
+        while ($r = $q->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $r;
+        }
+        return $data;
+    }
+
+    $cid = 1;
+
+    
+
     function getAlleasy($SQL, $conn){
         $q = $conn->query($SQL) or die("Failed");
         while ($r = $q->FETCH_ASSOC()){
@@ -23,6 +35,9 @@
         }
         return $data;
     }
+
+    $get = getAlleasy("SELECT qid FROM questions WHERE course_id = $cid ORDER BY RAND() limit 10", $conn);
+    print_r( $get );
 
     function easyqueary($query, $conn) {
         $r = $conn->prepare($query);
@@ -34,10 +49,10 @@
     $cid = 1;
 
     $qActual = getAlleasy("SELECT qid FROM questions WHERE course_id = '$cid'", $conn);
-    print_r( $qActual['qid'] );
+    // print_r( $qActual['qid'] );
 
 
-    public function SQLUpdate($table,$fields,$values,$where) {
+    function SQLUpdate($table,$fields,$values,$where) {
           $buildSQL = '';
           if (is_array($fields)) {
                 foreach($fields as $key => $field) :

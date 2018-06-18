@@ -92,33 +92,78 @@ $app->post('/addQuestions', function($request, $response){
     // return $result2;
 });
 
+$app->post('/testopt', function($request, $response){
+    $db = new DbHandler();
+    $response = array();
+    $r = json_decode($request->getBody());
+    verifyRequiredParams(array('limit'),$r);
+    $cid = $r->course_id;
+    $qid = $r->qid;
+    $respopt = $db->getAllrecords("SELECT * FROM options WHERE course_id = $cid  and qid = $qid ORDER BY RAND()");
+    $response["status"] = "success";
+    $response["options"] = array();
+    $test = array();
+    while($options = $respopt->fetch_assoc()) {
+        $tmpopt = array();
+        $tmpopt["name"] = $options["name"];
+        $tmpopt["id"] = $options["qid"] . '.' . $options['id'];
+        array_push($response["options"], $tmpopt);
+    }
+    return $this->response->withJson($response)->withStatus(200);
+});
+
+
+$app->post('/setgetquestions', function($request, $response){
+    $db = new DbHandler();
+    $response = array();
+    $r = json_decode($request->getBody());
+    verifyRequiredParams(array('course_id', 'limit'),$r);
+    $cid = $r->course_id;
+    $limit = $r->limit;
+    $respopt = $db->getAlleasy("SELECT qid FROM questions WHERE course_id = $cid ORDER BY RAND() limit $limit");
+    $response["status"] = "success";    $test = array();
+    $response['message'] = $respopt;
+    return $this->response->withJson($response)->withStatus(200);
+});
+
 $app->post('/getQuestions', function($request, $response){
     $db = new DbHandler();
     $response = array();
     $r = json_decode($request->getBody());
     verifyRequiredParams(array('limit'),$r);
     $cid = $r->course_id;
-    $resp = $db->getAllrecords("SELECT * FROM questions WHERE course_id = $cid ORDER BY RAND()");
-    $response["status"] = "success";
-    $response["questions"] = array();
-    $test = array();
-    while($questions = $resp->fetch_assoc()) {
-        $tmp = array();
-        $options = array();
-        $options['option_a'] = $questions['option_a']; 
-        $options['option_b'] = $questions['option_b']; 
-        $options['option_c'] = $questions['option_c']; 
-        $options['option_d'] = $questions['option_d']; 
-        $tmp["id"] = $questions["id"];
-        $tmp["question"] = $questions["question"];
-        $tmp["answer"] = $questions["correct_option"];
-        $tmp["options"] = $options;
-        $tmp["explanation"] = $questions["explanation"];
-        $tmp["isAnswered"] = $questions["isAnswered"];
-        $tmp["picked"] = $questions["picked"];
-        array_push($response["questions"], $tmp);
-        array_push($test, $options);
+    // $qid = $r->qid;
+    $limit = $r->limit;
+    $setquestions = $r->questionsselected;
+    for($i = 0; $i < count($setquestions); $i++){
+        foreach($setquestions as $qRow){ 
+            $qid = $qRow->qid;
+            $resp = $db->getAllrecords("SELECT * FROM questions WHERE course_id = $cid and qid = $qid limit $limit");
+            $respopt = $db->getAllrecords("SELECT * FROM options WHERE course_id = $cid  and qid = $qid limit $limit");
+            $response["status"] = "success";
+            $response["questions"] = array();
+            $optio = array();
+            while($options = $respopt->fetch_assoc()) {
+                $tmpopt = array();
+                $tmpopt["name"] = $options["name"];
+                $tmpopt["id"] = $options["qid"] . '.' . $options['id'];
+                array_push($optio, $tmpopt);
+            }
+            while($questions = $resp->fetch_assoc()) {
+                $tmp = array();
+                $tmp["id"] = $questions["id"];
+                $tmp["question"] = $questions["question"];
+                $tmp["answer"] = $questions["correct_option"];
+                $tmp["options"] = $optio;
+                $tmp["explanation"] = $questions["explanation"];
+                $tmp["isAnswered"] = $questions["isAnswered"];
+                $tmp["picked"] = $questions["picked"];
+                array_push($response["questions"], $tmp);
+            }
+        }
     }
+
+    
     return $this->response->withJson($response)->withStatus(200);
 });
 

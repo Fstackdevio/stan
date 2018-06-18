@@ -46,6 +46,23 @@ class DbHandler {
         return $tasks;
     }
 
+    public function getAll($table){
+        $SQL = "SELECT * from $table ORDER BY RAND() LIMIT 10";
+        $q = $this->conn->query($SQL) or die("Failed");
+        while ($r = $q->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $r;
+        }
+        return $data;
+    }
+
+    public function getAlleasy($SQL){
+        $q = $this->conn->query($SQL) or die("Failed");
+        while ($r = $q->FETCH_ASSOC()){
+            $data[] = $r;
+        }
+        return $data;
+    }
+
     public function easyqueary($SQL){
         $q = $this->conn->query($SQL) or die("Failed");
         while ($r = $q->FETCH_ASSOC()){
