@@ -3,7 +3,10 @@ app.config(['$urlRouterProvider', '$stateProvider', '$locationProvider', functio
 	$urlRouterProvider.otherwise('/login');
 
 	// $locationProvider.html5Mode(true);
-	$locationProvider.html5Mode(true).hashPrefix('!');
+	// $locationProvider.html5Mode({
+	// 	enabled: true,
+	// 	requireBase: false
+	//   });
 
 	$stateProvider
 	.state('login', {
