@@ -1,6 +1,9 @@
 var app = angular.module('ngQuiz');
-app.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
+app.config(['$urlRouterProvider', '$stateProvider', '$locationProvider', function($urlRouterProvider, $stateProvider, $locationProvider) {
 	$urlRouterProvider.otherwise('/login');
+
+	// $locationProvider.html5Mode(true);
+	$locationProvider.html5Mode(true).hashPrefix('!');
 
 	$stateProvider
 	.state('login', {

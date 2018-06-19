@@ -153,7 +153,7 @@ $app->post('/getQuestions', function($request, $response){
                 $tmp = array();
                 $tmp["id"] = $questions["id"];
                 $tmp["question"] = $questions["question"];
-                $tmp["answer"] = $questions["correct_option"];
+                // $tmp["answer"] = $questions["correct_option"];
                 $tmp["options"] = $optio;
                 $tmp["explanation"] = $questions["explanation"];
                 $tmp["isAnswered"] = $questions["isAnswered"];
