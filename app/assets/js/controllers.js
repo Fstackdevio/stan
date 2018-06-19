@@ -1,7 +1,6 @@
 'use strict';
 var app = angular.module('ngQuiz');
 
-
 app.controller('ngQuiz', ['$scope','$rootScope','$http', function($scope,$rootScope,$http){
 	
 	$rootScope.app = {
